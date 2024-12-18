@@ -1,0 +1,133 @@
+{
+  "/__docusaurus/debug-2cb": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    }
+  },
+  "/__docusaurus/debug/config-e60": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    }
+  },
+  "/__docusaurus/debug/content-ff1": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    },
+    "allContent": "allContent---docusaurus-debug-content-246-9aa"
+  },
+  "/__docusaurus/debug/globalData-dd6": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    }
+  },
+  "/__docusaurus/debug/metadata-23c": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    }
+  },
+  "/__docusaurus/debug/registry-037": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    }
+  },
+  "/__docusaurus/debug/routes-801": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-2-b-e0d"
+    }
+  },
+  "/docs-0c5": {
+    "__comp": "__comp---theme-docs-root-5-e-9-0b6",
+    "__context": {
+      "plugin": "plugin---docs-53-d-bcd"
+    }
+  },
+  "/docs-663": {
+    "__comp": "__comp---theme-doc-version-roota-7-b-5de",
+    "version": "version---docs-935-398"
+  },
+  "/docs-137": {
+    "__comp": "__comp---theme-doc-roota-94-67a"
+  },
+  "/docs/api/document-api-16b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-document-api-553-e34"
+  },
+  "/docs/api/events/document-events-739": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-events-document-eventsabf-582"
+  },
+  "/docs/api/events/lifecycle-events-0e0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-events-lifecycle-events-802-000"
+  },
+  "/docs/api/events/ui-events-983": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-events-ui-events-6-dd-62e"
+  },
+  "/docs/api/plugin-api-1d6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-plugin-api-54-d-88b"
+  },
+  "/docs/api/storage-api-a76": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-storage-apid-50-de4"
+  },
+  "/docs/api/ui-api-362": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-ui-apide-1-49c"
+  },
+  "/docs/examples/basic-plugin-dd3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-examples-basic-plugin-433-730"
+  },
+  "/docs/examples/document-plugin-d08": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-examples-document-pluginb-3-e-c0c"
+  },
+  "/docs/examples/ui-plugin-85f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-examples-ui-plugin-060-23d"
+  },
+  "/docs/guides/creating-plugins-839": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-guides-creating-pluginsdbe-422"
+  },
+  "/docs/guides/dependencies-d9b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-guides-dependenciese-6-a-68e"
+  },
+  "/docs/guides/permissions-193": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-guides-permissions-224-cff"
+  },
+  "/docs/guides/plugin-manifest-7fe": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-guides-plugin-manifest-5-f-1-125"
+  },
+  "/docs/installation-001": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-installation-3-b-8-7c6"
+  },
+  "/docs/introduction-457": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-introductiona-09-6b4"
+  },
+  "/docs/quick-start-a57": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-quick-start-72-e-2df"
+  },
+  "/-fdd": {
+    "__comp": "__comp---site-src-pages-index-tsx-1-df-d3e",
+    "__context": {
+      "plugin": "plugin---9-f-4-743"
+    },
+    "config": "config---5-e-9-4f3"
+  }
+}

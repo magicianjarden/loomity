@@ -1,0 +1,23 @@
+{
+  "id": "api/plugin-api",
+  "title": "Plugin API Reference",
+  "description": "The Plugin API provides the core functionality for interacting with the Loomity platform.",
+  "source": "@site/docs/api/plugin-api.md",
+  "sourceDirName": "api",
+  "slug": "/api/plugin-api",
+  "permalink": "/docs/api/plugin-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/plugin-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "apiSidebar",
+  "next": {
+    "title": "Document API",
+    "permalink": "/docs/api/document-api"
+  }
+}

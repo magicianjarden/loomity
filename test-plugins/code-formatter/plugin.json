@@ -1,0 +1,105 @@
+{
+  "manifest": {
+    "id": "code-formatter",
+    "name": "Code Formatter",
+    "version": "1.0.0",
+    "description": "A plugin to format code in various languages using prettier",
+    "author": "Test User",
+    "license": "MIT",
+    "homepage": "https://github.com/example/code-formatter",
+    "repository": "https://github.com/example/code-formatter",
+    
+    "requiredPermissions": [
+      "document:read",
+      "document:write",
+      "ui:toast",
+      "ui:menu"
+    ],
+    
+    "resourceLimits": {
+      "maxCPU": 50,
+      "maxMemory": 100000000,
+      "maxStorage": 1000000
+    },
+    
+    "main": "index.js",
+    "styles": ["styles.css"],
+    
+    "dependencies": {
+      "@prettier/plugin-typescript": "^1.0.0",
+      "@prettier/plugin-html": "^1.0.0",
+      "@prettier/plugin-css": "^1.0.0"
+    },
+    
+    "hooks": [
+      "document:beforeSave",
+      "document:contextMenu"
+    ],
+    
+    "events": [
+      "format:start",
+      "format:complete",
+      "format:error"
+    ],
+    
+    "settings": {
+      "schema": {
+        "formatOnSave": {
+          "type": "boolean",
+          "title": "Format on Save",
+          "description": "Automatically format code when saving",
+          "default": true
+        },
+        "indentSize": {
+          "type": "number",
+          "title": "Indent Size",
+          "description": "Number of spaces for indentation",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 8
+        },
+        "printWidth": {
+          "type": "number",
+          "title": "Print Width",
+          "description": "Maximum line width before wrapping",
+          "default": 80,
+          "minimum": 40,
+          "maximum": 120
+        }
+      },
+      "defaults": {
+        "formatOnSave": true,
+        "indentSize": 2,
+        "printWidth": 80
+      }
+    },
+    
+    "dataSchema": {
+      "version": 1,
+      "collections": {
+        "formatHistory": {
+          "id": "string",
+          "timestamp": "datetime",
+          "language": "string",
+          "fileSize": "number",
+          "duration": "number"
+        }
+      }
+    },
+    
+    "engines": {
+      "node": ">=14.0.0",
+      "npm": ">=6.0.0",
+      "platform": ["darwin", "linux", "win32"]
+    },
+    
+    "minimumHostVersion": "1.0.0"
+  },
+  "files": {
+    "index.js": "class CodeFormatterPlugin {\n  constructor(api) {\n    this.api = api;\n    this.settings = api.settings;\n    this.prettier = require('prettier');\n  }\n\n  async onLoad() {\n    // Register commands\n    this.api.commands.register('format.document', this.formatDocument.bind(this));\n    \n    // Add menu items\n    this.api.ui.addMenuItem({\n      id: 'format-document',\n      label: 'Format Document',\n      command: 'format.document',\n      keybinding: 'Cmd+Shift+F'\n    });\n\n    // Register format on save if enabled\n    if (this.settings.get('formatOnSave')) {\n      this.api.editor.onWillSave(this.formatDocument.bind(this));\n    }\n\n    // Log successful load\n    this.api.logger.info('Code Formatter Plugin loaded successfully');\n  }\n\n  async formatDocument() {\n    try {\n      const editor = this.api.editor.active;\n      if (!editor) return;\n\n      const text = editor.getText();\n      const language = editor.getLanguage();\n\n      // Emit start event\n      this.api.events.emit('format:start', { language });\n\n      // Format the code\n      const formatted = await this.prettier.format(text, {\n        parser: this.getParserForLanguage(language),\n        tabWidth: this.settings.get('indentSize'),\n        printWidth: this.settings.get('printWidth')\n      });\n\n      // Apply the formatting\n      editor.setText(formatted);\n\n      // Save format history\n      await this.api.db.collection('formatHistory').add({\n        timestamp: new Date(),\n        language,\n        fileSize: text.length,\n        duration: performance.now()\n      });\n\n      // Emit completion event\n      this.api.events.emit('format:complete', { language });\n\n      // Show success notification\n      this.api.ui.showNotification({\n        type: 'success',\n        message: 'Document formatted successfully'\n      });\n    } catch (error) {\n      // Emit error event\n      this.api.events.emit('format:error', { error });\n\n      // Show error notification\n      this.api.ui.showNotification({\n        type: 'error',\n        message: 'Failed to format document: ' + error.message\n      });\n\n      // Log error\n      this.api.logger.error('Format error:', error);\n    }\n  }\n\n  getParserForLanguage(language) {\n    const parserMap = {\n      'javascript': 'babel',\n      'typescript': 'typescript',\n      'html': 'html',\n      'css': 'css',\n      'json': 'json',\n      'markdown': 'markdown'\n    };\n    return parserMap[language] || 'babel';\n  }\n\n  onUnload() {\n    // Cleanup\n    this.api.commands.unregister('format.document');\n    this.api.logger.info('Code Formatter Plugin unloaded');\n  }\n}",
+    "styles.css": ".format-button {\n  display: inline-flex;\n  align-items: center;\n  padding: 6px 12px;\n  background-color: var(--primary-color);\n  color: white;\n  border: none;\n  border-radius: 4px;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\n\n.format-button:hover {\n  background-color: var(--primary-color-dark);\n}\n\n.format-button svg {\n  margin-right: 6px;\n  width: 16px;\n  height: 16px;\n}\n\n.format-status {\n  display: flex;\n  align-items: center;\n  padding: 8px;\n  margin: 8px 0;\n  border-radius: 4px;\n  font-size: 14px;\n}\n\n.format-status.success {\n  background-color: var(--success-bg);\n  color: var(--success-text);\n}\n\n.format-status.error {\n  background-color: var(--error-bg);\n  color: var(--error-text);\n}\n\n.format-settings {\n  padding: 16px;\n}\n\n.format-settings .setting-group {\n  margin-bottom: 16px;\n}\n\n.format-settings label {\n  display: block;\n  margin-bottom: 4px;\n  font-weight: 500;\n}\n\n.format-settings input[type=\"number\"],\n.format-settings input[type=\"checkbox\"] {\n  margin-top: 4px;\n}\n\n.format-settings .description {\n  font-size: 12px;\n  color: var(--text-muted);\n  margin-top: 4px;\n}"
+  },
+  "assets": {
+    "icon.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMSAxNHY1YTIgMiAwIDAgMS0yIDJINWEyIDIgMCAwIDEtMi0yVjVhMiAyIDAgMCAxIDItMmg1Ii8+PHBvbHlsaW5lIHBvaW50cz0iMTUgMyAyMSAzIDIxIDkiLz48bGluZSB4MT0iMTAiIHkxPSIxNCIgeDI9IjIxIiB5Mj0iMyIvPjwvc3ZnPg=="
+  }
+}

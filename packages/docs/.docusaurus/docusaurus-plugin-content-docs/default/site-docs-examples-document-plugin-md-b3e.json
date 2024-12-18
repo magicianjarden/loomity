@@ -1,0 +1,23 @@
+{
+  "id": "examples/document-plugin",
+  "title": "Document Plugin Example",
+  "description": "A plugin that demonstrates document manipulation capabilities.",
+  "source": "@site/docs/examples/document-plugin.md",
+  "sourceDirName": "examples",
+  "slug": "/examples/document-plugin",
+  "permalink": "/docs/examples/document-plugin",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/examples/document-plugin.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "UI Plugin Example",
+    "permalink": "/docs/examples/ui-plugin"
+  }
+}

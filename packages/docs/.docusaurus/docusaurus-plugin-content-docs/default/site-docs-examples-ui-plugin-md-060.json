@@ -1,0 +1,27 @@
+{
+  "id": "examples/ui-plugin",
+  "title": "UI Plugin Example",
+  "description": "A plugin that demonstrates UI integration capabilities.",
+  "source": "@site/docs/examples/ui-plugin.md",
+  "sourceDirName": "examples",
+  "slug": "/examples/ui-plugin",
+  "permalink": "/docs/examples/ui-plugin",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/examples/ui-plugin.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Basic Plugin Example",
+    "permalink": "/docs/examples/basic-plugin"
+  },
+  "next": {
+    "title": "Document Plugin Example",
+    "permalink": "/docs/examples/document-plugin"
+  }
+}

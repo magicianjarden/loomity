@@ -1,0 +1,119 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "introduction",
+          "docs": [
+            {
+              "id": "api/document-api",
+              "path": "/docs/api/document-api",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "api/events/document-events",
+              "path": "/docs/api/events/document-events",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "api/events/lifecycle-events",
+              "path": "/docs/api/events/lifecycle-events",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "api/events/ui-events",
+              "path": "/docs/api/events/ui-events",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "api/plugin-api",
+              "path": "/docs/api/plugin-api",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "api/storage-api",
+              "path": "/docs/api/storage-api",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "api/ui-api",
+              "path": "/docs/api/ui-api",
+              "sidebar": "apiSidebar"
+            },
+            {
+              "id": "examples/basic-plugin",
+              "path": "/docs/examples/basic-plugin",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "examples/document-plugin",
+              "path": "/docs/examples/document-plugin",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "examples/ui-plugin",
+              "path": "/docs/examples/ui-plugin",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "guides/creating-plugins",
+              "path": "/docs/guides/creating-plugins",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "guides/dependencies",
+              "path": "/docs/guides/dependencies",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "guides/permissions",
+              "path": "/docs/guides/permissions",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "guides/plugin-manifest",
+              "path": "/docs/guides/plugin-manifest",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "installation",
+              "path": "/docs/installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction",
+              "path": "/docs/introduction",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "quick-start",
+              "path": "/docs/quick-start",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/docs/introduction",
+                "label": "introduction"
+              }
+            },
+            "apiSidebar": {
+              "link": {
+                "path": "/docs/api/plugin-api",
+                "label": "api/plugin-api"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

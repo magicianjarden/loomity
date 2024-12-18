@@ -1,0 +1,68 @@
+/* Code Formatter Plugin Styles */
+
+.format-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.format-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.format-button svg {
+  margin-right: 6px;
+  width: 16px;
+  height: 16px;
+}
+
+.format-status {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.format-status.success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.format-status.error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+}
+
+/* Settings Form Styles */
+.format-settings {
+  padding: 16px;
+}
+
+.format-settings .setting-group {
+  margin-bottom: 16px;
+}
+
+.format-settings label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.format-settings input[type="number"],
+.format-settings input[type="checkbox"] {
+  margin-top: 4px;
+}
+
+.format-settings .description {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}

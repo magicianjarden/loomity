@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Theme Preview</title>
+</head>
+<body>
+    <canvas id="themePreview" width="1200" height="630"></canvas>
+    <script>
+        const canvas = document.getElementById('themePreview');
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#0F172A';
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Gradient overlay
+        const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+        gradient.addColorStop(0, '#60A5FA33');
+        gradient.addColorStop(1, '#10B98133');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Draw theme name
+        ctx.font = 'bold 72px system-ui';
+        ctx.fillStyle = '#F8FAFC';
+        ctx.textAlign = 'center';
+        ctx.fillText('Midnight Ocean', 600, 280);
+
+        // Draw theme description
+        ctx.font = '32px system-ui';
+        ctx.fillStyle = '#CBD5E1';
+        ctx.fillText('A sleek, dark theme inspired by the depths of the ocean', 600, 350);
+
+        // Draw color palette
+        const colors = ['#60A5FA', '#10B981', '#0F172A', '#1E293B', '#F8FAFC'];
+        const startX = 400;
+        const y = 450;
+        const size = 50;
+        const gap = 20;
+
+        colors.forEach((color, i) => {
+            ctx.fillStyle = color;
+            ctx.fillRect(startX + (size + gap) * i, y, size, size);
+            ctx.strokeStyle = '#475569';
+            ctx.strokeRect(startX + (size + gap) * i, y, size, size);
+        });
+
+        // Save as PNG
+        const link = document.createElement('a');
+        link.download = 'midnight-ocean-preview.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    </script>
+</body>
+</html>

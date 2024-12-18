@@ -1,0 +1,279 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "tutorialSidebar": [
+      {
+        "type": "category",
+        "label": "Getting Started",
+        "items": [
+          {
+            "type": "link",
+            "label": "Introduction to Loomity Plugins",
+            "href": "/docs/introduction",
+            "docId": "introduction",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Quick Start",
+            "href": "/docs/quick-start",
+            "docId": "quick-start",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Installation",
+            "href": "/docs/installation",
+            "docId": "installation",
+            "unlisted": false
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Guides",
+        "items": [
+          {
+            "type": "link",
+            "label": "Creating Plugins",
+            "href": "/docs/guides/creating-plugins",
+            "docId": "guides/creating-plugins",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Plugin Manifest",
+            "href": "/docs/guides/plugin-manifest",
+            "docId": "guides/plugin-manifest",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Plugin Permissions",
+            "href": "/docs/guides/permissions",
+            "docId": "guides/permissions",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Managing Dependencies",
+            "href": "/docs/guides/dependencies",
+            "docId": "guides/dependencies",
+            "unlisted": false
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Examples",
+        "items": [
+          {
+            "type": "link",
+            "label": "Basic Plugin Example",
+            "href": "/docs/examples/basic-plugin",
+            "docId": "examples/basic-plugin",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "UI Plugin Example",
+            "href": "/docs/examples/ui-plugin",
+            "docId": "examples/ui-plugin",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Document Plugin Example",
+            "href": "/docs/examples/document-plugin",
+            "docId": "examples/document-plugin",
+            "unlisted": false
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      }
+    ],
+    "apiSidebar": [
+      {
+        "type": "category",
+        "label": "Core API",
+        "items": [
+          {
+            "type": "link",
+            "label": "Plugin API Reference",
+            "href": "/docs/api/plugin-api",
+            "docId": "api/plugin-api",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Document API",
+            "href": "/docs/api/document-api",
+            "docId": "api/document-api",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "UI API",
+            "href": "/docs/api/ui-api",
+            "docId": "api/ui-api",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Storage API",
+            "href": "/docs/api/storage-api",
+            "docId": "api/storage-api",
+            "unlisted": false
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Events",
+        "items": [
+          {
+            "type": "link",
+            "label": "Lifecycle Events",
+            "href": "/docs/api/events/lifecycle-events",
+            "docId": "api/events/lifecycle-events",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Document Events",
+            "href": "/docs/api/events/document-events",
+            "docId": "api/events/document-events",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "UI Events",
+            "href": "/docs/api/events/ui-events",
+            "docId": "api/events/ui-events",
+            "unlisted": false
+          }
+        ],
+        "collapsed": true,
+        "collapsible": true
+      }
+    ]
+  },
+  "docs": {
+    "api/document-api": {
+      "id": "api/document-api",
+      "title": "Document API",
+      "description": "The Document API provides methods for reading and modifying document content.",
+      "sidebar": "apiSidebar"
+    },
+    "api/events/document-events": {
+      "id": "api/events/document-events",
+      "title": "Document Events",
+      "description": "Events related to document changes and operations.",
+      "sidebar": "apiSidebar"
+    },
+    "api/events/lifecycle-events": {
+      "id": "api/events/lifecycle-events",
+      "title": "Lifecycle Events",
+      "description": "Events related to plugin lifecycle management.",
+      "sidebar": "apiSidebar"
+    },
+    "api/events/ui-events": {
+      "id": "api/events/ui-events",
+      "title": "UI Events",
+      "description": "Events related to user interface interactions.",
+      "sidebar": "apiSidebar"
+    },
+    "api/plugin-api": {
+      "id": "api/plugin-api",
+      "title": "Plugin API Reference",
+      "description": "The Plugin API provides the core functionality for interacting with the Loomity platform.",
+      "sidebar": "apiSidebar"
+    },
+    "api/storage-api": {
+      "id": "api/storage-api",
+      "title": "Storage API",
+      "description": "The Storage API provides persistent storage capabilities for plugins.",
+      "sidebar": "apiSidebar"
+    },
+    "api/ui-api": {
+      "id": "api/ui-api",
+      "title": "UI API",
+      "description": "The UI API allows plugins to interact with Loomity's user interface.",
+      "sidebar": "apiSidebar"
+    },
+    "examples/basic-plugin": {
+      "id": "examples/basic-plugin",
+      "title": "Basic Plugin Example",
+      "description": "A simple plugin that demonstrates core functionality.",
+      "sidebar": "tutorialSidebar"
+    },
+    "examples/document-plugin": {
+      "id": "examples/document-plugin",
+      "title": "Document Plugin Example",
+      "description": "A plugin that demonstrates document manipulation capabilities.",
+      "sidebar": "tutorialSidebar"
+    },
+    "examples/ui-plugin": {
+      "id": "examples/ui-plugin",
+      "title": "UI Plugin Example",
+      "description": "A plugin that demonstrates UI integration capabilities.",
+      "sidebar": "tutorialSidebar"
+    },
+    "guides/creating-plugins": {
+      "id": "guides/creating-plugins",
+      "title": "Creating Plugins",
+      "description": "This guide will walk you through creating your first Loomity plugin.",
+      "sidebar": "tutorialSidebar"
+    },
+    "guides/dependencies": {
+      "id": "guides/dependencies",
+      "title": "Managing Dependencies",
+      "description": "Learn how to work with dependencies in Loomity plugins.",
+      "sidebar": "tutorialSidebar"
+    },
+    "guides/permissions": {
+      "id": "guides/permissions",
+      "title": "Plugin Permissions",
+      "description": "Understand how permissions work in Loomity plugins and how to use them securely.",
+      "sidebar": "tutorialSidebar"
+    },
+    "guides/plugin-manifest": {
+      "id": "guides/plugin-manifest",
+      "title": "Plugin Manifest",
+      "description": "The plugin manifest (plugin.json) defines your plugin's metadata and requirements.",
+      "sidebar": "tutorialSidebar"
+    },
+    "installation": {
+      "id": "installation",
+      "title": "Installation",
+      "description": "Learn how to install and set up your development environment for Loomity plugin development.",
+      "sidebar": "tutorialSidebar"
+    },
+    "introduction": {
+      "id": "introduction",
+      "title": "Introduction to Loomity Plugins",
+      "description": "Welcome to the Loomity Plugin Documentation! This guide will help you understand how to create, test, and publish plugins for the Loomity platform.",
+      "sidebar": "tutorialSidebar"
+    },
+    "quick-start": {
+      "id": "quick-start",
+      "title": "Quick Start",
+      "description": "Get started with Loomity plugin development in minutes.",
+      "sidebar": "tutorialSidebar"
+    }
+  }
+}

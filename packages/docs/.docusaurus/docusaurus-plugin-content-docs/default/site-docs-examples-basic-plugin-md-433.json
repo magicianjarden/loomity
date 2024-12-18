@@ -1,0 +1,27 @@
+{
+  "id": "examples/basic-plugin",
+  "title": "Basic Plugin Example",
+  "description": "A simple plugin that demonstrates core functionality.",
+  "source": "@site/docs/examples/basic-plugin.md",
+  "sourceDirName": "examples",
+  "slug": "/examples/basic-plugin",
+  "permalink": "/docs/examples/basic-plugin",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/examples/basic-plugin.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Managing Dependencies",
+    "permalink": "/docs/guides/dependencies"
+  },
+  "next": {
+    "title": "UI Plugin Example",
+    "permalink": "/docs/examples/ui-plugin"
+  }
+}

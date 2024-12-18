@@ -1,0 +1,8 @@
+{
+  "/not-found": "app/not-found.js",
+  "/page": "app/page.js",
+  "/api/plugins/route": "app/api/plugins/route.js",
+  "/api/plugins/resources/route": "app/api/plugins/resources/route.js",
+  "/api/plugins/security/route": "app/api/plugins/security/route.js",
+  "/api/plugins/logs/route": "app/api/plugins/logs/route.js"
+}

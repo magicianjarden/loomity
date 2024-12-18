@@ -1,0 +1,27 @@
+{
+  "id": "api/document-api",
+  "title": "Document API",
+  "description": "The Document API provides methods for reading and modifying document content.",
+  "source": "@site/docs/api/document-api.md",
+  "sourceDirName": "api",
+  "slug": "/api/document-api",
+  "permalink": "/docs/api/document-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/document-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "apiSidebar",
+  "previous": {
+    "title": "Plugin API Reference",
+    "permalink": "/docs/api/plugin-api"
+  },
+  "next": {
+    "title": "UI API",
+    "permalink": "/docs/api/ui-api"
+  }
+}

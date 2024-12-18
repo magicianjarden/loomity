@@ -1,0 +1,27 @@
+{
+  "id": "guides/creating-plugins",
+  "title": "Creating Plugins",
+  "description": "This guide will walk you through creating your first Loomity plugin.",
+  "source": "@site/docs/guides/creating-plugins.md",
+  "sourceDirName": "guides",
+  "slug": "/guides/creating-plugins",
+  "permalink": "/docs/guides/creating-plugins",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/guides/creating-plugins.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/docs/installation"
+  },
+  "next": {
+    "title": "Plugin Manifest",
+    "permalink": "/docs/guides/plugin-manifest"
+  }
+}

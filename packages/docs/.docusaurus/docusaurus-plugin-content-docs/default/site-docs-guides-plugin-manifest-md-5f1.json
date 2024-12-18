@@ -1,0 +1,27 @@
+{
+  "id": "guides/plugin-manifest",
+  "title": "Plugin Manifest",
+  "description": "The plugin manifest (plugin.json) defines your plugin's metadata and requirements.",
+  "source": "@site/docs/guides/plugin-manifest.md",
+  "sourceDirName": "guides",
+  "slug": "/guides/plugin-manifest",
+  "permalink": "/docs/guides/plugin-manifest",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/guides/plugin-manifest.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Creating Plugins",
+    "permalink": "/docs/guides/creating-plugins"
+  },
+  "next": {
+    "title": "Plugin Permissions",
+    "permalink": "/docs/guides/permissions"
+  }
+}

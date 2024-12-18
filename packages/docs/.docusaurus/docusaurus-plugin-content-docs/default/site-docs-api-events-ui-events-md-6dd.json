@@ -1,0 +1,23 @@
+{
+  "id": "api/events/ui-events",
+  "title": "UI Events",
+  "description": "Events related to user interface interactions.",
+  "source": "@site/docs/api/events/ui-events.md",
+  "sourceDirName": "api/events",
+  "slug": "/api/events/ui-events",
+  "permalink": "/docs/api/events/ui-events",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/events/ui-events.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "apiSidebar",
+  "previous": {
+    "title": "Document Events",
+    "permalink": "/docs/api/events/document-events"
+  }
+}

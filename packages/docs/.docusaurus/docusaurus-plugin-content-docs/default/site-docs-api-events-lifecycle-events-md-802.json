@@ -1,0 +1,27 @@
+{
+  "id": "api/events/lifecycle-events",
+  "title": "Lifecycle Events",
+  "description": "Events related to plugin lifecycle management.",
+  "source": "@site/docs/api/events/lifecycle-events.md",
+  "sourceDirName": "api/events",
+  "slug": "/api/events/lifecycle-events",
+  "permalink": "/docs/api/events/lifecycle-events",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/events/lifecycle-events.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "apiSidebar",
+  "previous": {
+    "title": "Storage API",
+    "permalink": "/docs/api/storage-api"
+  },
+  "next": {
+    "title": "Document Events",
+    "permalink": "/docs/api/events/document-events"
+  }
+}

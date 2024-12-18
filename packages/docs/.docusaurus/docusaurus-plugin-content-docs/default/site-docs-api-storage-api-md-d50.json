@@ -1,0 +1,27 @@
+{
+  "id": "api/storage-api",
+  "title": "Storage API",
+  "description": "The Storage API provides persistent storage capabilities for plugins.",
+  "source": "@site/docs/api/storage-api.md",
+  "sourceDirName": "api",
+  "slug": "/api/storage-api",
+  "permalink": "/docs/api/storage-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/storage-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "apiSidebar",
+  "previous": {
+    "title": "UI API",
+    "permalink": "/docs/api/ui-api"
+  },
+  "next": {
+    "title": "Lifecycle Events",
+    "permalink": "/docs/api/events/lifecycle-events"
+  }
+}

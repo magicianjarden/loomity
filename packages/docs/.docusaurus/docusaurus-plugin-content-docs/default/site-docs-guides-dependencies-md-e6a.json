@@ -1,0 +1,27 @@
+{
+  "id": "guides/dependencies",
+  "title": "Managing Dependencies",
+  "description": "Learn how to work with dependencies in Loomity plugins.",
+  "source": "@site/docs/guides/dependencies.md",
+  "sourceDirName": "guides",
+  "slug": "/guides/dependencies",
+  "permalink": "/docs/guides/dependencies",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/guides/dependencies.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Plugin Permissions",
+    "permalink": "/docs/guides/permissions"
+  },
+  "next": {
+    "title": "Basic Plugin Example",
+    "permalink": "/docs/examples/basic-plugin"
+  }
+}

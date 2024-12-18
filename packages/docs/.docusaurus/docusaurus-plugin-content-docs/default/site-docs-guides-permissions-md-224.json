@@ -1,0 +1,27 @@
+{
+  "id": "guides/permissions",
+  "title": "Plugin Permissions",
+  "description": "Understand how permissions work in Loomity plugins and how to use them securely.",
+  "source": "@site/docs/guides/permissions.md",
+  "sourceDirName": "guides",
+  "slug": "/guides/permissions",
+  "permalink": "/docs/guides/permissions",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/guides/permissions.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Plugin Manifest",
+    "permalink": "/docs/guides/plugin-manifest"
+  },
+  "next": {
+    "title": "Managing Dependencies",
+    "permalink": "/docs/guides/dependencies"
+  }
+}

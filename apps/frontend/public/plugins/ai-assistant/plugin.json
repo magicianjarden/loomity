@@ -1,0 +1,41 @@
+{
+  "name": "AI Assistant",
+  "version": "1.0.0",
+  "description": "An AI assistant that helps you write, edit, and analyze your documents",
+  "type": "plugin",
+  "author": "Loomity",
+  "category": "productivity",
+  "preview_images": ["/plugins/ai-assistant/preview.png"],
+  "entry_point": "/plugins/ai-assistant/index.js",
+  "dependencies": ["@loomity/core", "@loomity/ui"],
+  "permissions": ["document:read", "document:write", "ai:generate"],
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": ["gpt-3.5-turbo", "gpt-4"],
+          "default": "gpt-3.5-turbo"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.7
+        },
+        "maxTokens": {
+          "type": "number",
+          "minimum": 100,
+          "maximum": 4000,
+          "default": 1000
+        }
+      }
+    },
+    "default": {
+      "model": "gpt-3.5-turbo",
+      "temperature": 0.7,
+      "maxTokens": 1000
+    }
+  }
+}

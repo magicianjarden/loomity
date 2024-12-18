@@ -1,0 +1,27 @@
+{
+  "id": "api/events/document-events",
+  "title": "Document Events",
+  "description": "Events related to document changes and operations.",
+  "source": "@site/docs/api/events/document-events.md",
+  "sourceDirName": "api/events",
+  "slug": "/api/events/document-events",
+  "permalink": "/docs/api/events/document-events",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/events/document-events.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "apiSidebar",
+  "previous": {
+    "title": "Lifecycle Events",
+    "permalink": "/docs/api/events/lifecycle-events"
+  },
+  "next": {
+    "title": "UI Events",
+    "permalink": "/docs/api/events/ui-events"
+  }
+}

@@ -1,0 +1,557 @@
+/* Base editor styles */
+.ProseMirror {
+  min-height: 100%;
+  padding: 0.5rem;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Block hover effects */
+.ProseMirror p,
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror ul,
+.ProseMirror ol,
+.ProseMirror blockquote,
+.ProseMirror pre {
+  position: relative;
+  margin: 0.5rem 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center left;
+  will-change: transform, background-color;
+}
+
+/* Active block effect */
+.ProseMirror .is-active {
+  background-color: rgba(0, 0, 0, 0.03);
+  transform: translateX(4px) scale(1.002);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .ProseMirror .is-active {
+  background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover animations */
+.ProseMirror p:hover,
+.ProseMirror h1:hover,
+.ProseMirror h2:hover,
+.ProseMirror h3:hover,
+.ProseMirror ul:hover,
+.ProseMirror ol:hover,
+.ProseMirror blockquote:hover,
+.ProseMirror pre:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+  transform: translateX(2px) scale(1.001);
+}
+
+.dark .ProseMirror p:hover,
+.dark .ProseMirror h1:hover,
+.dark .ProseMirror h2:hover,
+.dark .ProseMirror h3:hover,
+.dark .ProseMirror ul:hover,
+.dark .ProseMirror ol:hover,
+.dark .ProseMirror blockquote:hover,
+.dark .ProseMirror pre:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Enhanced placeholder animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translateY(-1px);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseHint {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* Placeholder styles with enhanced animation */
+.ProseMirror p.is-empty::before,
+.ProseMirror h1.is-empty::before,
+.ProseMirror h2.is-empty::before,
+.ProseMirror h3.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.ProseMirror p.is-empty:hover::before,
+.ProseMirror h1.is-empty:hover::before,
+.ProseMirror h2.is-empty:hover::before,
+.ProseMirror h3.is-empty:hover::before {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+             pulseHint 2s ease-in-out infinite;
+}
+
+/* Enhanced empty block effects */
+@keyframes shimmerEnhanced {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.3;
+  }
+}
+
+.ProseMirror p:empty {
+  min-height: 1.5rem;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ProseMirror p:empty::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.02) 20%,
+    rgba(0, 0, 0, 0.03) 50%,
+    rgba(0, 0, 0, 0.02) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, background-position;
+}
+
+.dark .ProseMirror p:empty::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 20%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 255, 255, 0.02) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}
+
+.ProseMirror p:empty:hover::after {
+  opacity: 1;
+  animation: shimmerEnhanced 3s infinite;
+}
+
+/* Enhanced new block animation */
+@keyframes slideInEnhanced {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+  70% {
+    transform: translateY(2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ProseMirror > *:last-child {
+  animation: slideInEnhanced 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced block type transitions */
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, font-size;
+}
+
+/* Selection animation */
+@keyframes selectionPulse {
+  0% {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    background-color: rgba(59, 130, 246, 0.15);
+  }
+  100% {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+}
+
+.ProseMirror ::selection {
+  animation: selectionPulse 2s ease-in-out infinite;
+}
+
+/* Enhanced list animations */
+@keyframes listItemSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ProseMirror li {
+  animation: listItemSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced checkbox animations */
+@keyframes checkboxPop {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ProseMirror [data-type="taskItem"] input[type="checkbox"] {
+  margin: 0.5rem 0 0;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ProseMirror [data-type="taskItem"] input[type="checkbox"]:checked {
+  animation: checkboxPop 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Block-specific styles */
+.ProseMirror h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
+.ProseMirror h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.ProseMirror h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid #e9ecef;
+  padding-left: 1rem;
+  font-style: italic;
+}
+
+.dark .ProseMirror blockquote {
+  border-left-color: #495057;
+}
+
+.ProseMirror pre {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-family: monospace;
+}
+
+.dark .ProseMirror pre {
+  background-color: #212529;
+}
+
+/* List styles */
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5rem;
+}
+
+.ProseMirror [data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+}
+
+.ProseMirror [data-type="taskItem"] {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.ProseMirror [data-type="taskItem"] input[type="checkbox"] {
+  margin: 0.5rem 0 0;
+  cursor: pointer;
+}
+
+/* Focus styles */
+.ProseMirror:focus {
+  outline: none;
+}
+
+/* Virtual blocks */
+.ProseMirror p:empty {
+  min-height: 1.5rem;
+  position: relative;
+}
+
+.ProseMirror p:empty::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.02) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dark .ProseMirror p:empty::after {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    transparent 100%
+  );
+}
+
+.ProseMirror p:empty:hover::after {
+  opacity: 1;
+}
+
+/* Ensure consistent block height */
+.ProseMirror p {
+  min-height: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Smooth block transitions */
+.ProseMirror p,
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+  transition: all 0.2s ease;
+}
+
+/* Spacing */
+.ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+
+/* Animation for new blocks */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ProseMirror > *:last-child {
+  animation: slideDown 0.2s ease-out;
+}
+
+/* Suggestion list styles */
+.suggestion-list {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+.suggestion-list .items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.suggestion-list .item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.suggestion-list .item:hover,
+.suggestion-list .item.is-selected {
+  background: #f3f4f6;
+}
+
+.dark .suggestion-list {
+  background: #1f2937;
+}
+
+.dark .suggestion-list .item:hover,
+.dark .suggestion-list .item.is-selected {
+  background: #374151;
+}
+
+/* Tippy theme for slash commands */
+.tippy-box[data-theme~='light-border'] {
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.tippy-box[data-theme~='light-border'] .tippy-content {
+  padding: 0;
+}
+
+.tippy-box[data-theme~='light-border'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: hsl(var(--border));
+}
+
+.tippy-box[data-theme~='light-border'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: hsl(var(--border));
+}
+
+.tippy-box[data-theme~='light-border'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: hsl(var(--border));
+}
+
+.tippy-box[data-theme~='light-border'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: hsl(var(--border));
+}
+
+/* Dark mode support */
+.dark .tippy-box[data-theme~='light-border'] {
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--border));
+}
+
+/* Animation */
+@keyframes scale-subtle {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tippy-box[data-animation='scale-subtle'] {
+  transform-origin: top;
+}
+
+.tippy-box[data-animation='scale-subtle'][data-placement^='bottom'] {
+  transform-origin: top;
+}
+
+.tippy-box[data-animation='scale-subtle'][data-placement^='top'] {
+  transform-origin: bottom;
+}
+
+.tippy-box[data-animation='scale-subtle'][data-state='hidden'] {
+  transform: scale(0.96);
+  opacity: 0;
+}
+
+/* Slide Styles */
+.slide-block {
+  @apply relative;
+}
+
+.slide-block[data-template="default"] {
+  @apply grid grid-rows-[auto_1fr_auto];
+}
+
+.slide-block[data-template="title"] {
+  @apply grid grid-rows-[1fr_auto];
+}
+
+.slide-block[data-template="content"] {
+  @apply grid grid-rows-[auto_1fr];
+}
+
+.slide-block[data-template="two-column"] {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.slide-block[data-template="image"] {
+  @apply grid grid-cols-[2fr_3fr] gap-4;
+}
+
+/* Presentation Mode */
+.presentation-mode .slide-block {
+  @apply fixed inset-0 z-50 bg-white;
+}
+
+.presentation-mode .slide-block:not(.active) {
+  @apply hidden;
+}
+
+/* Slide Navigation */
+.slide-navigation {
+  @apply fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg;
+}
+
+.slide-navigation button {
+  @apply p-2 rounded-full hover:bg-gray-100 transition-colors;
+}
+
+/* Slide Thumbnails */
+.slide-thumbnails {
+  @apply grid grid-cols-4 gap-4 p-4;
+}
+
+.slide-thumbnail {
+  @apply aspect-video rounded-lg border bg-white p-2 cursor-pointer hover:border-blue-500 transition-colors;
+}
+
+.slide-thumbnail.active {
+  @apply border-blue-500 ring-2 ring-blue-500 ring-offset-2;
+}

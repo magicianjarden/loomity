@@ -1,0 +1,27 @@
+{
+  "id": "installation",
+  "title": "Installation",
+  "description": "Learn how to install and set up your development environment for Loomity plugin development.",
+  "source": "@site/docs/installation.md",
+  "sourceDirName": ".",
+  "slug": "/installation",
+  "permalink": "/docs/installation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/installation.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Quick Start",
+    "permalink": "/docs/quick-start"
+  },
+  "next": {
+    "title": "Creating Plugins",
+    "permalink": "/docs/guides/creating-plugins"
+  }
+}

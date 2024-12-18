@@ -1,0 +1,27 @@
+{
+  "id": "api/ui-api",
+  "title": "UI API",
+  "description": "The UI API allows plugins to interact with Loomity's user interface.",
+  "source": "@site/docs/api/ui-api.md",
+  "sourceDirName": "api",
+  "slug": "/api/ui-api",
+  "permalink": "/docs/api/ui-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/loomity/loomity/tree/main/packages/docs/docs/api/ui-api.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "apiSidebar",
+  "previous": {
+    "title": "Document API",
+    "permalink": "/docs/api/document-api"
+  },
+  "next": {
+    "title": "Storage API",
+    "permalink": "/docs/api/storage-api"
+  }
+}
