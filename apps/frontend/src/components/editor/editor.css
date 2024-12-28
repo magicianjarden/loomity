@@ -555,3 +555,26 @@
 .slide-thumbnail.active {
   @apply border-blue-500 ring-2 ring-blue-500 ring-offset-2;
 }
+
+/* Text Highlights */
+.selection-highlight,
+.text-highlight {
+  @apply bg-primary/20 rounded-sm;
+  padding: 1px 0;
+}
+
+.text-highlight {
+  cursor: pointer;
+  @apply hover:bg-primary/30 transition-colors;
+}
+
+/* Selection Highlight */
+.selection-highlight {
+  @apply bg-primary/20 rounded-sm;
+  padding: 1px 0;
+}
+
+:root {
+  --highlight-default: rgba(var(--primary), 0.1);
+  --highlight-hover: rgba(var(--primary), 0.15);
+}

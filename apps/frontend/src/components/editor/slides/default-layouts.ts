@@ -137,4 +137,26 @@ export const DEFAULT_LAYOUTS: SlideLayout[] = [
       areas: [],
     },
   },
+  {
+    id: 'quote',
+    name: 'Quote',
+    thumbnail: '/layouts/quote.svg',
+    type: 'default',
+    structure: {
+      areas: [
+        {
+          id: 'quote',
+          type: 'content',
+          ...gridToPercent({ x: 2, y: 3, w: 8, h: 4 }),
+          defaultContent: '"Click to add your quote here"',
+        },
+        {
+          id: 'author',
+          type: 'content',
+          ...gridToPercent({ x: 2, y: 7, w: 8, h: 1 }),
+          defaultContent: '- Author Name',
+        },
+      ],
+    },
+  },
 ];

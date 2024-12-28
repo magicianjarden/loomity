@@ -34,10 +34,26 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 type SidebarContext = 'home' | 'docs' | 'marketplace' | 'other';
 
 const sidebarItems = [
-  { value: 'home', icon: <LayoutDashboard className="h-4 w-4" />, label: 'Home' },
-  { value: 'docs', icon: <BookText className="h-4 w-4" />, label: 'Documents' },
-  { value: 'marketplace', icon: <Store className="h-4 w-4" />, label: 'Marketplace' },
-  { value: 'other', icon: <MoreHorizontal className="h-4 w-4" />, label: 'Other' },
+  { 
+    value: 'home', 
+    icon: <LayoutDashboard className="lucide lucide-layout-dashboard h-4 w-4" aria-hidden="true" />, 
+    label: 'Home' 
+  },
+  { 
+    value: 'docs', 
+    icon: <BookText className="lucide lucide-book-text h-4 w-4" aria-hidden="true" />, 
+    label: 'Documents' 
+  },
+  { 
+    value: 'marketplace', 
+    icon: <Store className="lucide lucide-store h-4 w-4" aria-hidden="true" />, 
+    label: 'Marketplace' 
+  },
+  { 
+    value: 'other', 
+    icon: <MoreHorizontal className="lucide lucide-more-horizontal h-4 w-4" aria-hidden="true" />, 
+    label: 'Other' 
+  },
 ];
 
 function DashboardLayoutContent({
@@ -260,7 +276,7 @@ function DashboardLayoutContent({
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   )}
                 >
-                  <LayoutDashboard className="h-4 w-4" />
+                  <LayoutDashboard className="lucide lucide-layout-dashboard h-4 w-4" aria-hidden="true" />
                   <span className="ml-3">Dashboard</span>
                 </button>
               </div>
@@ -277,7 +293,7 @@ function DashboardLayoutContent({
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   )}
                 >
-                  <Store className="h-4 w-4" />
+                  <Store className="lucide lucide-store h-4 w-4" aria-hidden="true" />
                   <span className="ml-3">Marketplace</span>
                 </button>
               </div>
@@ -593,9 +609,9 @@ function DashboardLayoutContent({
         )}
       >
         {isSidebarVisible ? (
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="lucide lucide-chevron-left h-4 w-4" aria-hidden="true" />
         ) : (
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="lucide lucide-chevron-right h-4 w-4" aria-hidden="true" />
         )}
       </button>
 

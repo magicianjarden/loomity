@@ -9,22 +9,18 @@ import Image from '@tiptap/extension-image';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import { CustomCodeBlock } from './extensions/code-block';
-import Table from '@tiptap/extension-table';
-import TableRow from '@tiptap/extension-table-row';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
+import { TableExtension } from './extensions/table-extension';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import { CalloutNode } from './extensions/callout';
-import { SlideNode } from './extensions/slide';
+import { Slide } from './extensions/slide';
 import { common, createLowlight } from 'lowlight';
 import { useCallback, useEffect, useState } from 'react';
 import { BlockMenu } from './block-menu';
 import './editor.css';
 import './styles/code-suggestions.css';
 import { Extension } from '@tiptap/core';
-import Suggestion from '@tiptap/suggestion';
-import { renderSuggestion } from './suggestion-renderer';
+import { SlashCommands } from './extensions/suggestions';
 import { CodeSuggestions } from './extensions/code-suggestions';
 import {
   Heading1,
@@ -40,7 +36,11 @@ import {
   XCircle,
   Lightbulb,
   Presentation,
+  Table,
+  ArrowUpRight,
+  X,
 } from 'lucide-react';
+import { tableTemplates } from './table/table-templates';
 import { PresentationMode } from './presentation/presentation-mode';
 import { AdaptiveToolbar } from './toolbar/adaptive-toolbar';
 import { Plugin, PluginKey } from 'prosemirror-state';
@@ -59,182 +59,31 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { SlideSidebar } from './slide-manager/slide-sidebar';
+import { Button } from '@/components/ui/button';
+import { SelectionHighlight } from './extensions/selection-highlight';
+import { TextHighlight } from './extensions/text-highlight';
 
 const lowlight = createLowlight(common);
 
 const slashCommandsKey = new PluginKey('slashCommands');
 const codeSuggestionsKey = new PluginKey('codeSuggestions');
 
-const SlashCommands = Extension.create({
-  name: 'slashCommands',
-
-  addOptions() {
-    return {
-      suggestion: {
-        char: '/',
-        command: ({ editor, range, props }: any) => {
-          props.command({ editor, range });
-        },
-      },
-    };
-  },
-
-  addProseMirrorPlugins() {
-    return [
-      Suggestion({
-        editor: this.editor,
-        ...this.options.suggestion,
-        pluginKey: slashCommandsKey,
-      }),
-    ];
-  },
-});
-
-const getSuggestionItems = ({ query }: { query: string }) => {
-  return [
-    {
-      title: 'Slide',
-      description: 'Add a new slide',
-      searchTerms: ['slide', 'presentation', 'powerpoint'],
-      icon: Presentation,
-      command: ({ editor, range }: any) => {
-        editor
-          .chain()
-          .focus()
-          .deleteRange(range)
-          .setSlide()
-          .run();
-      },
-    },
-    {
-      title: 'Heading 1',
-      icon: Heading1,
-      command: ({ editor, range }: any) => {
-        editor
-          .chain()
-          .focus()
-          .deleteRange(range)
-          .setNode('heading', { level: 1 })
-          .run();
-      },
-      keywords: ['h1', 'title', 'big'],
-    },
-    {
-      title: 'Heading 2',
-      icon: Heading2,
-      command: ({ editor, range }: any) => {
-        editor
-          .chain()
-          .focus()
-          .deleteRange(range)
-          .setNode('heading', { level: 2 })
-          .run();
-      },
-      keywords: ['h2', 'subtitle'],
-    },
-    {
-      title: 'Heading 3',
-      icon: Heading3,
-      command: ({ editor, range }: any) => {
-        editor
-          .chain()
-          .focus()
-          .deleteRange(range)
-          .setNode('heading', { level: 3 })
-          .run();
-      },
-      keywords: ['h3'],
-    },
-    {
-      title: 'Bullet List',
-      icon: List,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).toggleBulletList().run();
-      },
-      keywords: ['ul', 'list', 'bullet'],
-    },
-    {
-      title: 'Numbered List',
-      icon: ListOrdered,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).toggleOrderedList().run();
-      },
-      keywords: ['ol', 'list', 'number'],
-    },
-    {
-      title: 'Quote',
-      icon: Quote,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).toggleBlockquote().run();
-      },
-      keywords: ['blockquote', 'quote'],
-    },
-    {
-      title: 'Code Block',
-      icon: Code,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).toggleCodeBlock().run();
-      },
-      keywords: ['code', 'codeblock'],
-    },
-    {
-      title: 'Info Block',
-      icon: Info,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).setCallout('info').run();
-      },
-      keywords: ['info', 'information', 'note'],
-    },
-    {
-      title: 'Warning Block',
-      icon: AlertTriangle,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).setCallout('warning').run();
-      },
-      keywords: ['warning', 'alert', 'attention'],
-    },
-    {
-      title: 'Success Block',
-      icon: CheckCircle,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).setCallout('success').run();
-      },
-      keywords: ['success', 'done', 'complete'],
-    },
-    {
-      title: 'Error Block',
-      icon: XCircle,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).setCallout('error').run();
-      },
-      keywords: ['error', 'danger', 'failed'],
-    },
-    {
-      title: 'Tip Block',
-      icon: Lightbulb,
-      command: ({ editor, range }: any) => {
-        editor.chain().focus().deleteRange(range).setCallout('tip').run();
-      },
-      keywords: ['tip', 'hint', 'suggestion'],
-    },
-  ];
-
-  return items.filter(item => {
-    const search = query.toLowerCase();
-    return (
-      item.title.toLowerCase().includes(search) ||
-      item.keywords.some(keyword => keyword.toLowerCase().includes(search))
-    );
-  });
-};
-
 interface DocumentEditorProps {
-  content: string;
-  onChange: (content: string) => void;
+  content?: string;
+  onUpdate?: (content: string) => void;
   editable?: boolean;
 }
 
-export function DocumentEditor({ content, onChange, editable = true }: DocumentEditorProps) {
+export function DocumentEditor({
+  content = '',
+  onUpdate,
+  editable = true,
+}: DocumentEditorProps) {
+  const [selectedText, setSelectedText] = useState('');
+  const [selectionRange, setSelectionRange] = useState<{ from: number; to: number } | null>(null);
+  const [searchText, setSearchText] = useState('');
+  const [mounted, setMounted] = useState(false);
+  const [localContent, setLocalContent] = useState(content);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sensors = useSensors(
@@ -254,49 +103,73 @@ export function DocumentEditor({ content, onChange, editable = true }: DocumentE
         },
       }),
       Placeholder.configure({
-        placeholder: ({ node }) => {
-          if (node.type.name === 'heading') {
-            return "What's the title?";
-          }
-          return 'Press "/" for commands...';
-        },
+        placeholder: 'Type / to insert content...',
       }),
       Highlight,
       Link,
       Image,
       TaskList,
       TaskItem,
-      CustomCodeBlock.configure({
-        lowlight,
-      }),
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableCell,
-      TableHeader,
+      CustomCodeBlock,
+      TableExtension,
       Underline,
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),
       CalloutNode,
-      SlideNode.configure({
-        onOpenManager: () => setIsSidebarOpen(true),
-      }),
-      SlashCommands.configure({
-        suggestion: {
-          items: getSuggestionItems,
-          render: renderSuggestion,
-        },
-      }),
+      Slide,
+      SlashCommands,
       CodeSuggestions,
     ],
     content,
     editable,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      onUpdate?.(editor.getHTML());
     },
   });
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!editor) return;
+
+    // Handle Cmd/Ctrl+A (Select All)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+      const { from, to } = { from: 0, to: editor.state.doc.content.size };
+      setSelectionRange({ from, to });
+      setSelectedText(editor.state.doc.textBetween(from, to, ' '));
+    }
+
+    // Handle Cmd/Ctrl+F (Find)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+      e.preventDefault();
+      if (selectedText) {
+        setSearchText(selectedText);
+        editor.commands.setTextHighlight(selectedText);
+      }
+    }
+
+    // Handle Escape (Clear Search)
+    if (e.key === 'Escape') {
+      setSearchText('');
+      editor.commands.clearTextHighlight();
+    }
+  }, [editor, selectedText]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (onUpdate && localContent !== content) {
+      onUpdate(localContent);
+    }
+  }, [localContent, content, onUpdate]);
+
+  useEffect(() => {
+    if (editor) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [editor, handleKeyDown]);
 
   const [slides, setSlides] = useState<string[]>([]);
 
@@ -368,8 +241,17 @@ export function DocumentEditor({ content, onChange, editable = true }: DocumentE
     }
   };
 
-  if (!editor) {
-    return null;
+  if (!mounted) {
+    return (
+      <div className="w-full h-full animate-pulse">
+        <div className="h-10 bg-muted rounded mb-4" />
+        <div className="space-y-3">
+          <div className="h-4 bg-muted rounded w-3/4" />
+          <div className="h-4 bg-muted rounded w-1/2" />
+          <div className="h-4 bg-muted rounded w-5/6" />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -399,6 +281,46 @@ export function DocumentEditor({ content, onChange, editable = true }: DocumentE
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
+      {(selectedText || searchText) && (
+        <div className="fixed bottom-4 right-4 z-50 rounded-lg bg-background p-4 shadow-lg border">
+          <div className="flex items-center gap-4">
+            {selectedText && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  {selectedText.length} characters selected
+                </span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    if (selectionRange) {
+                      editor?.commands.setTextSelection(selectionRange);
+                    }
+                  }}
+                >
+                  <ArrowUpRight className="h-4 w-4 mr-1" />
+                  Jump
+                </Button>
+              </div>
+            )}
+            {searchText && (
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setSearchText('');
+                    editor?.commands.clearTextHighlight();
+                  }}
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Clear Search
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

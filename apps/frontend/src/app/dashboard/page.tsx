@@ -35,6 +35,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { formatDistanceToNow, format, parseISO, isWithinInterval, subDays } from 'date-fns';
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -100,7 +101,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="lucide lucide-loader2 h-8 w-8 animate-spin" aria-hidden="true" />
       </div>
     );
   }
@@ -125,13 +126,13 @@ export default function DashboardPage() {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link href="/dashboard/settings">
-              <Settings className="h-4 w-4 mr-2" />
+              <Settings className="lucide lucide-settings h-4 w-4 mr-2" aria-hidden="true" />
               Settings
             </Link>
           </Button>
           <Button size="sm" asChild>
             <Link href="/dashboard/workspaces/new">
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="lucide lucide-plus h-4 w-4 mr-2" aria-hidden="true" />
               New Workspace
             </Link>
           </Button>
@@ -144,7 +145,7 @@ export default function DashboardPage() {
           <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Workspaces</CardTitle>
             <div className="rounded-full bg-blue-100 p-2.5 dark:bg-blue-900">
-              <FolderOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <FolderOpen className="lucide lucide-folder-open h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -167,7 +168,7 @@ export default function DashboardPage() {
           <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Documents</CardTitle>
             <div className="rounded-full bg-purple-100 p-2.5 dark:bg-purple-900">
-              <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <FileText className="lucide lucide-file-text h-4 w-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -190,16 +191,23 @@ export default function DashboardPage() {
           <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
             <div className="rounded-full bg-green-100 p-2.5 dark:bg-green-900">
-              <Clock className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <Clock className="lucide lucide-clock h-4 w-4 text-green-600 dark:text-green-400" aria-hidden="true" />
             </div>
           </CardHeader>
           <CardContent className="relative">
             <div className="flex items-baseline space-x-2">
               <div className="text-3xl font-bold">
                 {activity.filter(a => {
-                  const date = new Date(a.updated_at);
-                  const now = new Date();
-                  return (now.getTime() - date.getTime()) < 7 * 24 * 60 * 60 * 1000;
+                  if (!a.updated_at) return false;
+                  try {
+                    const date = parseISO(a.updated_at);
+                    return isWithinInterval(date, {
+                      start: subDays(new Date(), 7),
+                      end: new Date()
+                    });
+                  } catch {
+                    return false;
+                  }
                 }).length}
               </div>
               <div className="text-sm font-medium text-muted-foreground">
@@ -217,7 +225,7 @@ export default function DashboardPage() {
           <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Shared With Me</CardTitle>
             <div className="rounded-full bg-orange-100 p-2.5 dark:bg-orange-900">
-              <Share2 className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+              <Share2 className="lucide lucide-share2 h-4 w-4 text-orange-600 dark:text-orange-400" aria-hidden="true" />
             </div>
           </CardHeader>
           <CardContent className="relative">
@@ -247,7 +255,7 @@ export default function DashboardPage() {
               </div>
               <Button variant="ghost" size="icon" asChild>
                 <Link href="/dashboard/documents">
-                  <Clock className="h-4 w-4" />
+                  <Clock className="lucide lucide-clock h-4 w-4" aria-hidden="true" />
                 </Link>
               </Button>
             </div>
@@ -264,23 +272,23 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="rounded-full p-2 bg-purple-100 dark:bg-purple-900">
-                      <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      <FileText className="lucide lucide-file-text h-4 w-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                     </div>
                     <div>
                       <p className="text-sm font-medium leading-none mb-1">{doc.title || 'Untitled'}</p>
                       <p className="text-xs text-muted-foreground">
-                        Updated {new Date(doc.updated_at).toLocaleDateString()}
+                        Updated {format(parseISO(doc.updated_at), 'MMM d, yyyy')}
                       </p>
                     </div>
                   </div>
                   <div className="text-muted-foreground hover:text-foreground">
-                    <Clock className="h-4 w-4" />
+                    <Clock className="lucide lucide-clock h-4 w-4" aria-hidden="true" />
                   </div>
                 </Link>
               ))}
               {recentDocs.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <FileText className="h-8 w-8 text-muted-foreground/50 mb-4" />
+                  <FileText className="lucide lucide-file-text h-8 w-8 text-muted-foreground/50 mb-4" aria-hidden="true" />
                   <p className="text-sm text-muted-foreground">No recent documents</p>
                   <p className="text-xs text-muted-foreground mt-1">
                     Create a new document to get started
@@ -300,7 +308,7 @@ export default function DashboardPage() {
                 <CardDescription>Common tasks and shortcuts</CardDescription>
               </div>
               <Button variant="ghost" size="icon">
-                <Settings className="h-4 w-4" />
+                <Settings className="lucide lucide-settings h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
           </CardHeader>
@@ -311,7 +319,7 @@ export default function DashboardPage() {
               )} asChild>
                 <Link href="/dashboard/workspaces/new">
                   <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
-                    <FolderOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <FolderOpen className="lucide lucide-folder-open h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   </div>
                   <span className="text-sm font-medium">New Workspace</span>
                 </Link>
@@ -321,7 +329,7 @@ export default function DashboardPage() {
               )} asChild>
                 <Link href="/dashboard/documents/new">
                   <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-900">
-                    <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    <FileText className="lucide lucide-file-text h-5 w-5 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                   </div>
                   <span className="text-sm font-medium">New Document</span>
                 </Link>
@@ -331,7 +339,7 @@ export default function DashboardPage() {
               )} asChild>
                 <Link href="/dashboard/shared">
                   <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900">
-                    <Share2 className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                    <Share2 className="lucide lucide-share2 h-5 w-5 text-orange-600 dark:text-orange-400" aria-hidden="true" />
                   </div>
                   <span className="text-sm font-medium">Shared With Me</span>
                 </Link>
@@ -341,7 +349,7 @@ export default function DashboardPage() {
               )} asChild>
                 <Link href="/dashboard/settings">
                   <div className="rounded-full bg-slate-100 p-3 dark:bg-slate-900">
-                    <Settings className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                    <Settings className="lucide lucide-settings h-5 w-5 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                   </div>
                   <span className="text-sm font-medium">Settings</span>
                 </Link>

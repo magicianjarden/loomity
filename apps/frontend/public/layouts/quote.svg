@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#F8F9FA"/>
+  
+  <!-- Quote marks -->
+  <path d="M120 100C120 95.5817 123.582 92 128 92H140C144.418 92 148 95.5817 148 100V112C148 116.418 144.418 120 140 120H128C123.582 120 120 116.418 120 112V100Z" fill="#E2E8F0"/>
+  <path d="M132 104L136 108M132 108L136 104" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Quote text area -->
+  <rect x="80" y="90" width="240" height="80" rx="4" fill="#E2E8F0"/>
+  
+  <!-- Text lines -->
+  <rect x="100" y="110" width="200" height="8" rx="4" fill="#94A3B8"/>
+  <rect x="100" y="130" width="180" height="8" rx="4" fill="#94A3B8"/>
+  <rect x="100" y="150" width="160" height="8" rx="4" fill="#94A3B8"/>
+  
+  <!-- Author attribution -->
+  <rect x="200" y="190" width="120" height="8" rx="4" fill="#94A3B8"/>
+</svg>

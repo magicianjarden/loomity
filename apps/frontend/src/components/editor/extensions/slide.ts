@@ -1,83 +1,83 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
+import { SlideBlock } from '../blocks/slide-block';
+import { Background, SlideElement } from '../slides/types';
 import { v4 as uuidv4 } from 'uuid';
-import { SlideComponent } from '../blocks/slide-component';
-import { slideLayouts } from '../slides/slide-layouts';
-import { SlideAttributes } from '../slides/types';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     slide: {
-      setSlide: () => ReturnType;
-      updateSlideLayout: (slideId: string, layoutId: string) => ReturnType;
-      updateSlideNotes: (slideId: string, notes: string) => ReturnType;
-      deleteSlide: () => ReturnType;
+      /**
+       * Add a slide
+       */
+      setSlide: (options?: { 
+        id?: string;
+        elements?: SlideElement[];
+        background?: Background;
+        notes?: string;
+      }) => ReturnType;
     };
   }
 }
 
 export interface SlideOptions {
   HTMLAttributes: Record<string, any>;
+  onOpenManager?: () => void;
 }
 
-export const SlideNode = Node.create<SlideOptions>({
+export const Slide = Node.create<SlideOptions>({
   name: 'slide',
-
+  
   group: 'block',
-
-  content: 'block+',
-
+  
+  atom: true,
+  
   draggable: true,
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+      onOpenManager: () => {},
+    };
+  },
 
   addAttributes() {
     return {
       id: {
         default: null,
-        parseHTML: element => element.getAttribute('data-slide-id'),
-        renderHTML: attributes => {
-          return {
-            'data-slide-id': attributes.id,
-          };
-        },
+        parseHTML: element => element.getAttribute('data-id'),
+        renderHTML: attributes => ({ 'data-id': attributes.id }),
       },
-      layout: {
-        default: 'title',
-        parseHTML: element => element.getAttribute('data-layout'),
-        renderHTML: attributes => {
-          return {
-            'data-layout': attributes.layout,
-          };
-        },
-      },
-      structure: {
-        default: slideLayouts[0].structure,
+      elements: {
+        default: [],
         parseHTML: element => {
-          const structureStr = element.getAttribute('data-structure');
-          return structureStr ? JSON.parse(structureStr) : slideLayouts[0].structure;
+          try {
+            return JSON.parse(element.getAttribute('data-elements') || '[]');
+          } catch {
+            return [];
+          }
         },
-        renderHTML: attributes => {
-          return {
-            'data-structure': JSON.stringify(attributes.structure),
-          };
+        renderHTML: attributes => ({
+          'data-elements': JSON.stringify(attributes.elements),
+        }),
+      },
+      background: {
+        default: { type: 'color', value: '#ffffff' },
+        parseHTML: element => {
+          try {
+            return JSON.parse(element.getAttribute('data-background') || '{"type":"color","value":"#ffffff"}');
+          } catch {
+            return { type: 'color', value: '#ffffff' };
+          }
         },
+        renderHTML: attributes => ({
+          'data-background': JSON.stringify(attributes.background),
+        }),
       },
       notes: {
         default: '',
         parseHTML: element => element.getAttribute('data-notes'),
-        renderHTML: attributes => {
-          return {
-            'data-notes': attributes.notes,
-          };
-        },
-      },
-      showNotes: {
-        default: false,
-        parseHTML: element => element.getAttribute('data-show-notes') === 'true',
-        renderHTML: attributes => {
-          return {
-            'data-show-notes': attributes.showNotes,
-          };
-        },
+        renderHTML: attributes => ({ 'data-notes': attributes.notes }),
       },
     };
   },
@@ -91,90 +91,31 @@ export const SlideNode = Node.create<SlideOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes({ 'data-type': 'slide' }, HTMLAttributes), 0];
+    return ['div', mergeAttributes(this.options.HTMLAttributes, { 'data-type': 'slide' }, HTMLAttributes)];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(SlideBlock, {
+      decorations: false
+    });
   },
 
   addCommands() {
     return {
       setSlide:
-        () =>
-        ({ chain }) => {
-          const defaultLayout = slideLayouts[0];
-          return chain()
-            .insertContent({
-              type: this.name,
-              attrs: {
-                id: uuidv4(),
-                layout: defaultLayout.id,
-                structure: defaultLayout.structure,
-              },
-              content: [
-                {
-                  type: 'paragraph',
-                },
-              ],
-            })
-            .run();
-        },
-      updateSlideLayout:
-        (slideId: string, layoutId: string) =>
-        ({ tr }) => {
-          const pos = this.findSlidePosition(tr.doc, slideId);
-          if (pos === -1) return false;
-
-          const layout = slideLayouts.find(l => l.id === layoutId);
-          if (!layout) return false;
-
-          tr.setNodeAttribute(pos, 'layout', layoutId);
-          tr.setNodeAttribute(pos, 'structure', layout.structure);
-          return true;
-        },
-      updateSlideNotes:
-        (slideId: string, notes: string) =>
-        ({ tr }) => {
-          const pos = this.findSlidePosition(tr.doc, slideId);
-          if (pos === -1) return false;
-
-          tr.setNodeAttribute(pos, 'notes', notes);
-          return true;
-        },
-      deleteSlide:
-        () =>
-        ({ tr, state }) => {
-          const { $from } = state.selection;
-          const depth = $from.depth;
-          
-          // Find the slide node
-          let pos = $from.before(depth);
-          let node = tr.doc.nodeAt(pos);
-          
-          // Keep going up until we find the slide
-          while (node && node.type.name !== 'slide' && depth > 0) {
-            pos = $from.before(--depth);
-            node = tr.doc.nodeAt(pos);
-          }
-          
-          if (!node || node.type.name !== 'slide') return false;
-          
-          // Delete the slide
-          tr.delete(pos, pos + node.nodeSize);
-          return true;
+        (options = {}) =>
+        ({ commands }) => {
+          const slideId = options.id || uuidv4();
+          return commands.insertContent({
+            type: this.name,
+            attrs: {
+              id: slideId,
+              elements: options.elements || [],
+              background: options.background || { type: 'color', value: '#ffffff' },
+              notes: options.notes || '',
+            },
+          });
         },
     };
-  },
-
-  addNodeView() {
-    return ReactNodeViewRenderer(SlideComponent);
-  },
-
-  findSlidePosition(doc: any, slideId: string): number {
-    let slidePos = -1;
-    doc.descendants((node: any, pos: number) => {
-      if (node.type.name === this.name && node.attrs.id === slideId) {
-        slidePos = pos;
-        return false;
-      }
-    });
-    return slidePos;
   },
 });

@@ -28,9 +28,45 @@ export const LANGUAGE_KEYWORDS: Record<string, string[]> = {
     'nav', 'header', 'footer', 'main', 'section', 'article', 'aside', 'figure', 'figcaption',
   ],
   css: [
-    'color', 'background', 'margin', 'padding', 'border', 'display', 'position', 'width', 'height',
-    'flex', 'grid', 'font-size', 'font-weight', 'text-align', 'align-items', 'justify-content',
-    'transition', 'transform', 'animation', '@media', '@keyframes', '@import', '@font-face',
+    // Layout
+    'display', 'position', 'top', 'right', 'bottom', 'left', 'float', 'clear',
+    'visibility', 'overflow', 'z-index', 'margin', 'padding', 'width', 'height',
+    'min-width', 'max-width', 'min-height', 'max-height', 'box-sizing',
+    
+    // Flexbox
+    'flex', 'flex-direction', 'flex-wrap', 'flex-flow', 'justify-content',
+    'align-items', 'align-content', 'align-self', 'order', 'flex-grow',
+    'flex-shrink', 'flex-basis',
+    
+    // Grid
+    'grid', 'grid-template-columns', 'grid-template-rows', 'grid-template-areas',
+    'grid-auto-columns', 'grid-auto-rows', 'grid-auto-flow', 'grid-column-gap',
+    'grid-row-gap', 'grid-gap',
+    
+    // Typography
+    'font-family', 'font-size', 'font-weight', 'font-style', 'text-align',
+    'text-decoration', 'text-transform', 'line-height', 'letter-spacing',
+    'word-spacing', 'white-space', 'color',
+    
+    // Background
+    'background', 'background-color', 'background-image', 'background-repeat',
+    'background-position', 'background-size', 'background-attachment',
+    
+    // Border
+    'border', 'border-width', 'border-style', 'border-color', 'border-radius',
+    'border-top', 'border-right', 'border-bottom', 'border-left',
+    
+    // Transform & Animation
+    'transform', 'transform-origin', 'transition', 'animation', '@keyframes',
+    'animation-name', 'animation-duration', 'animation-timing-function',
+    'animation-delay', 'animation-iteration-count', 'animation-direction',
+    
+    // Other
+    'opacity', 'box-shadow', 'cursor', 'pointer-events', 'user-select',
+    'filter', 'backdrop-filter', 'clip-path', 'mask', 'perspective',
+    
+    // Media Queries & Import
+    '@media', '@import', '@font-face', '@supports', '@layer', '@container',
   ],
 };
 
@@ -42,11 +78,24 @@ export const LANGUAGE_FUNCTIONS: Record<string, string[]> = {
     'Math.floor()', 'Math.ceil()', 'Math.round()', 'Math.random()',
     'Array.isArray()', 'Object.keys()', 'Object.values()', 'JSON.stringify()',
     'JSON.parse()', 'String()', 'Number()', 'Boolean()',
+    'Promise.all()', 'Promise.race()', 'Promise.resolve()', 'Promise.reject()',
+    'Array.prototype.map()', 'Array.prototype.filter()', 'Array.prototype.reduce()',
+    'String.prototype.trim()', 'String.prototype.split()', 'String.prototype.replace()',
+  ],
+  typescript: [
+    'Array.from()', 'Object.entries()', 'Object.assign()', 'Object.create()',
+    'Promise.all()', 'Promise.race()', 'Promise.resolve()', 'Promise.reject()',
+    'Array<T>()', 'Record<K,T>()', 'Partial<T>()', 'Required<T>()',
+    'Pick<T,K>()', 'Omit<T,K>()', 'Exclude<T,U>()', 'Extract<T,U>()',
+    'NonNullable<T>()', 'ReturnType<T>()', 'InstanceType<T>()', 'ThisType<T>()',
+    'keyof typeof', 'typeof', 'as const', 'satisfies',
   ],
   python: [
     'print()', 'len()', 'range()', 'str()', 'int()', 'float()', 'list()', 'dict()',
     'set()', 'tuple()', 'sum()', 'max()', 'min()', 'sorted()', 'enumerate()',
     'zip()', 'map()', 'filter()', 'reduce()', 'any()', 'all()', 'isinstance()',
+    'open()', 'read()', 'write()', 'close()', 'with()', 'super()', '__init__()',
+    'join()', 'split()', 'strip()', 'replace()', 'format()', 'startswith()', 'endswith()',
   ],
 };
 

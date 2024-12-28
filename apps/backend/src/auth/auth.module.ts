@@ -8,12 +8,12 @@ import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    ConfigModule,
+    ConfigModule.forRoot(),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+        secret: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'your-fallback-secret-key',
         signOptions: { expiresIn: '60m' },
       }),
       inject: [ConfigService],

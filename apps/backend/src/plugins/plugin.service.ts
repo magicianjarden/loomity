@@ -9,6 +9,7 @@ import {
   CreatePluginDTO,
   UpdatePluginDTO,
   PluginSearchParams,
+  PluginStatus,
 } from './types';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class PluginService {
     const metadata: PluginMetadata = {
       id: crypto.randomUUID(),
       ...dto,
-      status: 'beta',
+      status: PluginStatus.BETA,
       created_at: new Date(),
       updated_at: new Date(),
     };

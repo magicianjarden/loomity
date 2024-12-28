@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/tooltip';
 import { LucideIcon } from 'lucide-react';
 import { ButtonHTMLAttributes } from 'react';
+import classNames from 'classnames';
 
 interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon: LucideIcon;
@@ -29,10 +30,10 @@ export function ToolbarButton({
           <Button
             variant="ghost"
             size="sm"
-            className={isActive ? 'bg-accent' : ''}
+            className={classNames("p-2", isActive && "bg-accent")}
             {...props}
           >
-            <Icon className="h-4 w-4" />
+            <Icon className="lucide h-4 w-4" aria-hidden="true" />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="center">

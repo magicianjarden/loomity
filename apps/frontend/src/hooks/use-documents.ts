@@ -13,8 +13,8 @@ interface Document {
   is_pinned: boolean;
   is_favorite: boolean;
   is_workspace: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export function useDocuments() {
@@ -51,7 +51,14 @@ export function useDocuments() {
 
         if (error) throw error;
 
-        setDocuments(data || []);
+        // Ensure dates are in ISO string format
+        const formattedData = data?.map(doc => ({
+          ...doc,
+          created_at: new Date(doc.created_at).toISOString(),
+          updated_at: new Date(doc.updated_at).toISOString(),
+        })) || [];
+
+        setDocuments(formattedData);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to fetch documents'));
       } finally {
@@ -76,10 +83,18 @@ export function useDocuments() {
           setDocuments(prevDocs => {
             switch (payload.eventType) {
               case 'INSERT':
-                return [...prevDocs, payload.new];
+                return [...prevDocs, {
+                  ...payload.new,
+                  created_at: new Date(payload.new.created_at).toISOString(),
+                  updated_at: new Date(payload.new.updated_at).toISOString(),
+                }];
               case 'UPDATE':
                 return prevDocs.map(doc => 
-                  doc.id === payload.new.id ? payload.new : doc
+                  doc.id === payload.new.id ? {
+                    ...payload.new,
+                    created_at: new Date(payload.new.created_at).toISOString(),
+                    updated_at: new Date(payload.new.updated_at).toISOString(),
+                  } : doc
                 );
               case 'DELETE':
                 return prevDocs.filter(doc => doc.id !== payload.old.id);

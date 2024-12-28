@@ -1,186 +1,220 @@
-import { SlideLayout } from './types';
+import { SlideElement } from './types';
+
+export interface SlideLayout {
+  id: string;
+  name: string;
+  elements: SlideElement[];
+}
 
 export const slideLayouts: SlideLayout[] = [
   {
     id: 'title',
     name: 'Title Slide',
-    description: 'A slide with a large title and optional subtitle',
-    structure: {
-      layout: 'grid',
-      gridTemplate: {
-        areas: [
-          'title title title',
-          'subtitle subtitle subtitle'
-        ],
-        columns: '1fr 1fr 1fr',
-        rows: '60% 40%'
+    elements: [
+      {
+        id: 'title',
+        type: 'text',
+        content: {
+          html: '<h1>Click to edit title</h1>',
+          plainText: 'Click to edit title',
+        },
+        style: {
+          position: { x: 100, y: 100 },
+          size: { width: 800, height: 100 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 48,
+          fontFamily: 'Inter',
+          textAlign: 'center',
+          color: '#000000',
+        },
       },
-      areas: [
-        {
-          id: 'title',
-          type: 'text',
-          gridArea: 'title',
-          className: 'text-4xl font-bold text-center',
-          placeholder: 'Title',
+      {
+        id: 'subtitle',
+        type: 'text',
+        content: {
+          html: '<h2>Click to edit subtitle</h2>',
+          plainText: 'Click to edit subtitle',
         },
-        {
-          id: 'subtitle',
-          type: 'text',
-          gridArea: 'subtitle',
-          className: 'text-xl text-muted-foreground text-center',
-          placeholder: 'Subtitle',
+        style: {
+          position: { x: 100, y: 250 },
+          size: { width: 800, height: 60 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 32,
+          fontFamily: 'Inter',
+          textAlign: 'center',
+          color: '#666666',
         },
-      ],
-    },
-    thumbnail: '/layouts/title-slide.svg',
+      },
+    ],
   },
   {
     id: 'content',
     name: 'Content',
-    description: 'A slide with a title and content area',
-    structure: {
-      layout: 'grid',
-      gridTemplate: {
-        areas: [
-          'header header header',
-          'content content content'
-        ],
-        columns: '1fr 1fr 1fr',
-        rows: '20% 80%'
+    elements: [
+      {
+        id: 'title',
+        type: 'text',
+        content: {
+          html: '<h2>Click to edit title</h2>',
+          plainText: 'Click to edit title',
+        },
+        style: {
+          position: { x: 100, y: 50 },
+          size: { width: 800, height: 60 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 32,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
+        },
       },
-      areas: [
-        {
-          id: 'header',
-          type: 'text',
-          gridArea: 'header',
-          className: 'text-2xl font-semibold',
-          placeholder: 'Title',
+      {
+        id: 'content',
+        type: 'text',
+        content: {
+          html: '<ul><li>Click to edit content</li></ul>',
+          plainText: 'Click to edit content',
         },
-        {
-          id: 'content',
-          type: 'content',
-          gridArea: 'content',
-          className: 'prose dark:prose-invert max-w-none',
-          placeholder: 'Content',
+        style: {
+          position: { x: 100, y: 150 },
+          size: { width: 800, height: 400 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 24,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
         },
-      ],
-    },
-    thumbnail: '/layouts/content.svg',
+      },
+    ],
   },
   {
     id: 'two-column',
     name: 'Two Columns',
-    description: 'A slide with two equal columns',
-    structure: {
-      layout: 'grid',
-      gridTemplate: {
-        areas: [
-          'header header header',
-          'left right right'
-        ],
-        columns: '1fr 1fr 1fr',
-        rows: '20% 80%'
+    elements: [
+      {
+        id: 'title',
+        type: 'text',
+        content: {
+          html: '<h2>Click to edit title</h2>',
+          plainText: 'Click to edit title',
+        },
+        style: {
+          position: { x: 100, y: 50 },
+          size: { width: 800, height: 60 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 32,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
+        },
       },
-      areas: [
-        {
-          id: 'header',
-          type: 'text',
-          gridArea: 'header',
-          className: 'text-2xl font-semibold',
-          placeholder: 'Title',
+      {
+        id: 'left-content',
+        type: 'text',
+        content: {
+          html: '<ul><li>Left column content</li></ul>',
+          plainText: 'Left column content',
         },
-        {
-          id: 'left',
-          type: 'content',
-          gridArea: 'left',
-          className: 'prose dark:prose-invert max-w-none',
-          placeholder: 'Left Column',
+        style: {
+          position: { x: 100, y: 150 },
+          size: { width: 380, height: 400 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 24,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
         },
-        {
-          id: 'right',
-          type: 'content',
-          gridArea: 'right',
-          className: 'prose dark:prose-invert max-w-none',
-          placeholder: 'Right Column',
-        },
-      ],
-    },
-    thumbnail: '/layouts/two-column.svg',
-  },
-  {
-    id: 'image-content',
-    name: 'Image with Content',
-    description: 'A slide with an image on one side and content on the other',
-    structure: {
-      layout: 'grid',
-      gridTemplate: {
-        areas: [
-          'header header header',
-          'image content content'
-        ],
-        columns: '1fr 1fr 1fr',
-        rows: '20% 80%'
       },
-      areas: [
-        {
-          id: 'header',
-          type: 'text',
-          gridArea: 'header',
-          className: 'text-2xl font-semibold',
-          placeholder: 'Title',
+      {
+        id: 'right-content',
+        type: 'text',
+        content: {
+          html: '<ul><li>Right column content</li></ul>',
+          plainText: 'Right column content',
         },
-        {
-          id: 'image',
-          type: 'image',
-          gridArea: 'image',
-          className: 'aspect-square',
-          placeholder: 'Click to add image',
+        style: {
+          position: { x: 520, y: 150 },
+          size: { width: 380, height: 400 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 24,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
         },
-        {
-          id: 'content',
-          type: 'content',
-          gridArea: 'content',
-          className: 'prose dark:prose-invert max-w-none',
-          placeholder: 'Content',
-        },
-      ],
-    },
-    thumbnail: '/layouts/image-content.svg',
+      },
+    ],
   },
   {
-    id: 'section',
-    name: 'Section Break',
-    description: 'A slide to mark a new section',
-    structure: {
-      layout: 'grid',
-      areas: [
-        {
-          id: 'title',
-          type: 'text',
-          gridArea: '1 / 1 / 2 / 2',
-          className: 'text-5xl font-bold text-center',
-          placeholder: 'Section Title',
+    id: 'image-text',
+    name: 'Image with Text',
+    elements: [
+      {
+        id: 'title',
+        type: 'text',
+        content: {
+          html: '<h2>Click to edit title</h2>',
+          plainText: 'Click to edit title',
         },
-      ],
-    },
-    thumbnail: '/layouts/section.svg',
-  },
-  {
-    id: 'blank',
-    name: 'Blank',
-    description: 'A blank slide for custom content',
-    structure: {
-      layout: 'grid',
-      areas: [
-        {
-          id: 'content',
-          type: 'content',
-          gridArea: '1 / 1 / 2 / 2',
-          className: 'prose dark:prose-invert max-w-none',
-          placeholder: 'Content',
+        style: {
+          position: { x: 100, y: 50 },
+          size: { width: 800, height: 60 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 32,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
         },
-      ],
-    },
-    thumbnail: '/layouts/blank.svg',
+      },
+      {
+        id: 'image',
+        type: 'image',
+        content: {
+          src: '',
+          alt: 'Add an image',
+        },
+        style: {
+          position: { x: 100, y: 150 },
+          size: { width: 380, height: 400 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+        },
+      },
+      {
+        id: 'content',
+        type: 'text',
+        content: {
+          html: '<p>Click to edit content</p>',
+          plainText: 'Click to edit content',
+        },
+        style: {
+          position: { x: 520, y: 150 },
+          size: { width: 380, height: 400 },
+          rotation: 0,
+          opacity: 1,
+          zIndex: 1,
+          fontSize: 24,
+          fontFamily: 'Inter',
+          textAlign: 'left',
+          color: '#000000',
+        },
+      },
+    ],
   },
 ];

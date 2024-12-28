@@ -10,7 +10,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Layout } from 'lucide-react';
 import { SlideThumbnail } from './slide-thumbnail';
 import {
   DndContext,
@@ -25,6 +25,13 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { slideLayouts } from '../slides/slide-layouts';
 
 interface SlideSidebarProps {
   editor: Editor;
@@ -59,8 +66,28 @@ export function SlideSidebar({ editor, isOpen, onClose }: SlideSidebarProps) {
     }
   }, [editor, isOpen]);
 
-  const addNewSlide = () => {
-    editor.commands.setSlide();
+  const addNewSlide = (layoutId: string) => {
+    const layout = slideLayouts.find(l => l.id === layoutId);
+    if (!layout) return;
+
+    const newSlideId = crypto.randomUUID();
+    const maxOrder = Math.max(...slides.map(s => s.order), -1);
+    
+    editor.commands.insertContentAt(editor.state.doc.content.size, {
+      type: 'slide',
+      attrs: {
+        slideId: newSlideId,
+        order: maxOrder + 1,
+      },
+      content: layout.elements.map(element => ({
+        type: element.type,
+        attrs: {
+          ...element.content,
+          ...element.style,
+          id: crypto.randomUUID(),
+        },
+      })),
+    });
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -125,14 +152,28 @@ export function SlideSidebar({ editor, isOpen, onClose }: SlideSidebarProps) {
         </SheetHeader>
 
         <div className="mt-8 space-y-4">
-          <Button
-            onClick={addNewSlide}
-            variant="outline"
-            className="w-full justify-start"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add New Slide
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add New Slide
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-[200px]">
+              {slideLayouts.map((layout) => (
+                <DropdownMenuItem
+                  key={layout.id}
+                  onClick={() => addNewSlide(layout.id)}
+                >
+                  <Layout className="mr-2 h-4 w-4" />
+                  {layout.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <DndContext
             sensors={sensors}
@@ -143,16 +184,14 @@ export function SlideSidebar({ editor, isOpen, onClose }: SlideSidebarProps) {
               items={slides.map(slide => slide.id)}
               strategy={verticalListSortingStrategy}
             >
-              <div className="space-y-2">
-                {slides.map(slide => (
-                  <SlideThumbnail
-                    key={slide.id}
-                    editor={editor}
-                    slideId={slide.id}
-                    order={slide.order}
-                  />
-                ))}
-              </div>
+              {slides.map(slide => (
+                <SlideThumbnail
+                  key={slide.id}
+                  editor={editor}
+                  slideId={slide.id}
+                  order={slide.order}
+                />
+              ))}
             </SortableContext>
           </DndContext>
         </div>

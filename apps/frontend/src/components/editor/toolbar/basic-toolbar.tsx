@@ -1,5 +1,4 @@
-'use client';
-
+/** @jsxImportSource react */
 import { Editor } from '@tiptap/react';
 import {
   Bold,
@@ -62,9 +61,9 @@ export function BasicToolbar({ editor }: BasicToolbarProps) {
       />
       <ToolbarButton
         icon={Code}
-        tooltip="Inline Code"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        isActive={editor.isActive('code')}
+        tooltip="Code Block (⌘+Alt+C)"
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        isActive={editor.isActive('codeBlock')}
       />
 
       <Separator orientation="vertical" className="mx-1 h-6" />

@@ -4,7 +4,6 @@ import * as React from "react"
 import * as Primitive from "@radix-ui/react-primitive"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
-import { PanelLeft, Store } from "lucide-react"
 
 import { useIsMobile } from "../../hooks/use-mobile"
 import { cn } from "../../lib/utils"
@@ -13,6 +12,7 @@ import { Input } from "../../components/ui/input"
 import { Separator } from "../../components/ui/separator"
 import { Sheet, SheetContent } from "../../components/ui/sheet"
 import { Skeleton } from "../../components/ui/skeleton"
+import { Icon } from "./client-icon"
 import {
   Tooltip,
   TooltipContent,
@@ -272,23 +272,22 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar()
+  const { state, toggleSidebar } = useSidebar()
 
   return (
     <Button
       ref={ref}
-      data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
-      onClick={(event) => {
-        onClick?.(event)
+      className={cn("hover:bg-transparent", className)}
+      onClick={(e) => {
         toggleSidebar()
+        onClick?.(e)
       }}
       {...props}
     >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
+      <Icon name="PanelLeft" className="h-4 w-4" />
+      <span className="sr-only">Toggle sidebar</span>
     </Button>
   )
 })
@@ -433,7 +432,7 @@ const SidebarContent = React.forwardRef<
                 className="w-full justify-start gap-2"
                 onClick={() => window.open('/marketplace', '_blank')}
               >
-                <Store className="h-4 w-4" />
+                <Icon name="Store" className="h-4 w-4" />
                 <span className={cn(
                   "flex-1 text-left",
                   state === "collapsed" && !isMobile && "hidden"

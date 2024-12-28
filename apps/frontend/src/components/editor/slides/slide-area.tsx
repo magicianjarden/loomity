@@ -1,133 +1,291 @@
-import React from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useDrag } from '@use-gesture/react';
 import { cn } from '@/lib/utils';
-import { NodeViewContent } from '@tiptap/react';
-import { Plus, Grip } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Slide, SlideElement, ElementType, ElementStyle } from './types';
+import { TextElement } from './elements/text-element';
+import { ShapeElement } from './elements/shape-element';
+import { ImageElement } from './elements/image-element';
+import { CodeElement } from './elements/code-element';
+import { TableElement } from './elements/table-element';
+import { ChartElement } from './elements/chart-element';
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from '@/components/ui/context-menu';
-import { motion } from 'framer-motion';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/client-icon';
 
 interface SlideAreaProps {
-  id: string;
-  type: 'text' | 'content' | 'image';
-  gridArea: string;
-  className?: string;
-  style?: React.CSSProperties;
-  placeholder?: string;
-  onDragStart?: () => void;
-  onDragEnd?: () => void;
-  onDelete?: () => void;
-  onDuplicate?: () => void;
+  slide: Slide;
+  isEditing: boolean;
+  showGrid?: boolean;
+  showRulers?: boolean;
+  showAnimations?: boolean;
+  onUpdate?: (elements: SlideElement[]) => void;
+  onAddElement?: (type: ElementType) => void;
 }
 
 export function SlideArea({
-  id,
-  type,
-  gridArea,
-  className,
-  style,
-  placeholder,
-  onDragStart,
-  onDragEnd,
-  onDelete,
-  onDuplicate,
+  slide,
+  isEditing,
+  showGrid,
+  showRulers,
+  showAnimations,
+  onUpdate,
+  onAddElement,
 }: SlideAreaProps) {
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [isEmpty, setIsEmpty] = React.useState(true);
+  const [selectedElement, setSelectedElement] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleContentChange = (content: string) => {
-    setIsEmpty(!content.trim());
-  };
+  // Handle element selection
+  const handleElementSelect = useCallback((elementId: string) => {
+    setSelectedElement(elementId);
+  }, []);
+
+  // Handle element drag
+  const handleElementDrag = useCallback((elementId: string, position: { x: number; y: number }) => {
+    if (!onUpdate || !slide.elements) return;
+
+    const updatedElements = slide.elements.map(element => {
+      if (element.id === elementId) {
+        return {
+          ...element,
+          style: {
+            ...element.style,
+            position,
+          },
+        };
+      }
+      return element;
+    });
+
+    onUpdate(updatedElements);
+  }, [onUpdate, slide.elements]);
+
+  // Handle element resize
+  const handleElementResize = useCallback((elementId: string, size: { width: number; height: number }) => {
+    if (!onUpdate || !slide.elements) return;
+
+    const updatedElements = slide.elements.map(element => {
+      if (element.id === elementId) {
+        return {
+          ...element,
+          style: {
+            ...element.style,
+            size,
+          },
+        };
+      }
+      return element;
+    });
+
+    onUpdate(updatedElements);
+  }, [onUpdate, slide.elements]);
+
+  // Handle element rotation
+  const handleElementRotate = useCallback((elementId: string, rotation: number) => {
+    if (!onUpdate || !slide.elements) return;
+
+    const updatedElements = slide.elements.map(element => {
+      if (element.id === elementId) {
+        return {
+          ...element,
+          style: {
+            ...element.style,
+            rotation,
+          },
+        };
+      }
+      return element;
+    });
+
+    onUpdate(updatedElements);
+  }, [onUpdate, slide.elements]);
+
+  // Delete element
+  const handleDeleteElement = useCallback((elementId: string) => {
+    if (!onUpdate || !slide.elements) return;
+
+    const updatedElements = slide.elements.filter(element => element.id !== elementId);
+    onUpdate(updatedElements);
+  }, [onUpdate, slide.elements]);
+
+  const renderElement = useCallback((element: SlideElement) => {
+    const isSelected = element.id === selectedElement;
+    const props = {
+      element,
+      isSelected,
+      isEditing,
+      onSelect: handleElementSelect,
+      onDrag: handleElementDrag,
+      onResize: handleElementResize,
+      onRotate: handleElementRotate,
+      onDelete: handleDeleteElement,
+      showAnimations,
+    };
+
+    switch (element.type) {
+      case 'text':
+        return <TextElement key={element.id} {...props} />;
+      case 'shape':
+        return <ShapeElement key={element.id} {...props} />;
+      case 'image':
+        return <ImageElement key={element.id} {...props} />;
+      case 'code':
+        return <CodeElement key={element.id} {...props} />;
+      case 'table':
+        return <TableElement key={element.id} {...props} />;
+      case 'chart':
+        return <ChartElement key={element.id} {...props} />;
+      default:
+        return null;
+    }
+  }, [selectedElement, isEditing, handleElementSelect, handleElementDrag, handleElementResize, handleElementRotate, handleDeleteElement, showAnimations]);
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <motion.div
-          whileHover={{ scale: 1.01 }}
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-          className={cn(
-            'relative rounded-lg border border-dashed border-muted-foreground/20',
-            'transition-all duration-200',
-            'group focus-within:border-primary/50 hover:border-primary/30',
-            'w-full h-full flex flex-col',
-            isEmpty && 'min-h-[120px]',
-            className
-          )}
-          style={{
-            gridArea,
-            ...style,
-          }}
-          role="region"
-          aria-label={`${type} content area`}
-        >
-          {/* Drag Handle */}
-          {isHovered && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute -left-10 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
-              onMouseDown={onDragStart}
-              onMouseUp={onDragEnd}
-              aria-label="Drag to reorder"
-            >
-              <Grip className="h-4 w-4" />
-            </Button>
-          )}
+    <div
+      ref={containerRef}
+      className={cn(
+        "relative w-full aspect-[16/9] bg-white rounded-lg overflow-hidden",
+        showGrid && "bg-grid-pattern",
+      )}
+      style={{
+        backgroundColor: slide.background.type === 'color' ? slide.background.value : undefined,
+        backgroundImage: slide.background.type === 'image' ? `url(${slide.background.value})` : undefined,
+      }}
+      onClick={(e) => {
+        // Prevent click event from bubbling up
+        e.stopPropagation();
+      }}
+    >
+      {showRulers && (
+        <>
+          <div className="absolute top-0 left-0 w-full h-6 bg-muted/20" />
+          <div className="absolute top-0 left-0 w-6 h-full bg-muted/20" />
+        </>
+      )}
 
-          {/* Content */}
-          <div className="flex-1 w-full h-full p-4">
-            {type === 'text' ? (
-              <div className="prose dark:prose-invert max-w-none w-full h-full flex items-center justify-center">
-                <NodeViewContent 
-                  className="outline-none break-words whitespace-pre-wrap w-full text-center" 
-                  as="p" 
-                  onInput={(e) => handleContentChange(e.currentTarget.textContent || '')}
-                />
-              </div>
-            ) : type === 'content' ? (
-              <NodeViewContent 
-                className="outline-none break-words whitespace-pre-wrap prose dark:prose-invert max-w-none w-full h-full" 
-                onInput={(e) => handleContentChange(e.currentTarget.textContent || '')}
-              />
-            ) : type === 'image' ? (
-              <div className="w-full h-full flex items-center justify-center bg-muted/50 rounded-md">
-                <p className="text-sm text-muted-foreground">{placeholder}</p>
-                {isHovered && (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="absolute inset-0 m-auto w-fit h-fit opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Image
-                  </Button>
-                )}
-              </div>
-            ) : null}
-          </div>
+      {isEditing && (
+        <div className="absolute right-4 top-4 z-50 slide-toolbar">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2"
+              >
+                <Icon name="Layers" className="h-4 w-4 mr-1" />
+                Add Element
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center px-2 py-1.5 text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddElement?.('text');
+                  }}
+                >
+                  <Icon name="Type" className="h-4 w-4 mr-2" />
+                  Text
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center px-2 py-1.5 text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddElement?.('shape');
+                  }}
+                >
+                  <Icon name="Square" className="h-4 w-4 mr-2" />
+                  Shape
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center px-2 py-1.5 text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddElement?.('image');
+                  }}
+                >
+                  <Icon name="Image" className="h-4 w-4 mr-2" />
+                  Image
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center px-2 py-1.5 text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddElement?.('code');
+                  }}
+                >
+                  <Icon name="Code2" className="h-4 w-4 mr-2" />
+                  Code
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center px-2 py-1.5 text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddElement?.('table');
+                  }}
+                >
+                  <Icon name="Table" className="h-4 w-4 mr-2" />
+                  Table
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center px-2 py-1.5 text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddElement?.('chart');
+                  }}
+                >
+                  <Icon name="BarChart3" className="h-4 w-4 mr-2" />
+                  Chart
+                </button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
 
-          {/* Empty State */}
-          {isEmpty && type !== 'image' && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <p className="text-sm text-muted-foreground">
-                Click to add {type === 'text' ? 'text' : 'content'}
-              </p>
-            </div>
-          )}
-        </motion.div>
-      </ContextMenuTrigger>
-      
-      <ContextMenuContent>
-        <ContextMenuItem onClick={onDuplicate}>Duplicate</ContextMenuItem>
-        <ContextMenuItem onClick={onDelete} className="text-destructive">
-          Delete
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+      <AnimatePresence>
+        {slide.elements?.map(element => (
+          <motion.div
+            key={element.id}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+          >
+            {renderElement(element)}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
   );
 }

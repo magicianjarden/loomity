@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#F8F9FA"/>
+  
+  <!-- Title area -->
+  <rect x="80" y="100" width="240" height="40" rx="4" fill="#E2E8F0"/>
+  <rect x="100" y="116" width="200" height="8" rx="4" fill="#94A3B8"/>
+  
+  <!-- Subtitle area -->
+  <rect x="80" y="160" width="240" height="20" rx="4" fill="#E2E8F0"/>
+  <rect x="100" y="166" width="160" height="8" rx="4" fill="#94A3B8"/>
+</svg>

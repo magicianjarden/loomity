@@ -1,203 +1,208 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { NodeViewProps, NodeViewWrapper } from '@tiptap/react';
+import React, { useCallback, useRef, useState, memo } from 'react';
+import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Eye, EyeOff, GripVertical, Grid } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import { CSS } from '@dnd-kit/utilities';
-import { useSortable } from '@dnd-kit/sortable';
-import { slideLayouts } from '../slides/slide-layouts';
+import { SlideToolbar } from '../toolbar/slide-toolbar';
 import { SlideArea } from '../slides/slide-area';
-import { useSlideInteractions } from '../slides/use-slide-interactions';
-import {
-  GRID_GAP,
-  SLIDE_ASPECT_RATIO,
-  DEFAULT_SLIDE_WIDTH,
-  DEFAULT_SLIDE_HEIGHT,
-} from '../slides/types';
+import { slideLayouts } from '../slides/slide-layouts';
+import { ElementType, SlideElement, ElementStyle } from '../slides/types';
+import dynamic from 'next/dynamic';
 
 interface SlideComponentProps extends NodeViewProps {
   onOpenManager?: () => void;
 }
 
-export function SlideComponent({ ...props }: SlideComponentProps) {
-  const { attributes, node } = props;
-  const [showNotes, setShowNotes] = useState(node.attrs.showNotes || false);
+const SlideComponentBase = memo(function SlideComponent({ 
+  node, 
+  updateAttributes, 
+  selected,
+  onOpenManager,
+}: SlideComponentProps) {
   const [showGrid, setShowGrid] = useState(false);
-  const notesRef = useRef<HTMLTextAreaElement>(null);
+  const [showRulers, setShowRulers] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
+  const [showAnimations, setShowAnimations] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    attributes: sortableAttributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({
-    id: node.attrs.id,
-  });
+  // Handle layout selection
+  const handleLayoutSelect = useCallback((layoutId: string) => {
+    const layout = slideLayouts.find(l => l.id === layoutId);
+    if (!layout) return;
 
-  const {
-    activeAreaId,
-    isDragging,
-    isMobile,
-    handleAreaClick,
-    handleDragStart,
-    handleDragEnd,
-    getAreaStyles,
-  } = useSlideInteractions();
+    updateAttributes({
+      layout: layoutId,
+      elements: layout.elements,
+    });
+  }, [updateAttributes]);
 
-  const calculateSlideDimensions = () => {
-    if (!containerRef.current) return { width: '100%', height: 'auto' };
-    const containerWidth = containerRef.current.clientWidth;
-    const width = Math.min(containerWidth, DEFAULT_SLIDE_WIDTH);
-    const height = width / SLIDE_ASPECT_RATIO;
-    
-    // Calculate relative padding based on slide width
-    const basePadding = Math.max(16, width * 0.03); // Min 16px, max 3% of width
-    
-    return { 
-      width: `${width}px`, 
-      height: `${height}px`,
-      padding: `${basePadding}px`,
-    };
-  };
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  const layout = slideLayouts.find(l => l.id === node.attrs.layout) || slideLayouts[0];
-  const { structure } = layout;
-
-  const getGridStyles = () => {
-    const dimensions = calculateSlideDimensions();
-    const { gridTemplate } = structure;
-
-    return {
-      display: 'grid',
-      gridTemplateAreas: `'${gridTemplate.areas.join("' '")}'`,
-      gridTemplateColumns: gridTemplate.columns,
-      gridTemplateRows: gridTemplate.rows,
-      gap: GRID_GAP,
-      width: dimensions.width,
-      height: dimensions.height,
-      padding: dimensions.padding,
-    };
-  };
-
-  const updateNotes = (notes: string) => {
-    if (props.updateAttributes) {
-      props.updateAttributes({ notes });
+  // Get default content for new elements
+  const getDefaultContent = (type: ElementType) => {
+    switch (type) {
+      case 'text':
+        return {
+          html: '<p>Double click to edit text</p>',
+          plainText: 'Double click to edit text',
+        };
+      case 'shape':
+        return {
+          shapeType: 'rectangle' as const,
+        };
+      case 'image':
+        return {
+          src: '',
+          alt: '',
+        };
+      case 'code':
+        return {
+          code: '// Add your code here',
+          language: 'javascript',
+        };
+      case 'table':
+        return {
+          rows: 3,
+          cols: 3,
+          data: Array(3).fill(Array(3).fill('')),
+        };
+      case 'chart':
+        return {
+          type: 'bar' as const,
+          data: {
+            labels: ['A', 'B', 'C'],
+            datasets: [{
+              label: 'Sample Data',
+              data: [1, 2, 3],
+              backgroundColor: 'rgba(75, 192, 192, 0.5)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            }],
+          },
+        };
+      default:
+        return {};
     }
   };
 
-  const handleAreaDuplicate = (areaId: string) => {
-    // Implementation for duplicating areas
-    console.log('Duplicate area:', areaId);
-  };
+  // Handle adding new elements
+  const handleAddElement = useCallback((type: ElementType) => {
+    console.log('Adding element:', type);
+    console.log('Before update - node.attrs:', node.attrs);
+    
+    const defaultStyle: ElementStyle = {
+      position: { x: 100, y: 100 },
+      size: { 
+        width: type === 'text' ? 300 : 400,
+        height: type === 'text' ? 100 : 300 
+      },
+      rotation: 0,
+      opacity: 1,
+      zIndex: (node.attrs.elements?.length || 0) + 1,
+      backgroundColor: type === 'shape' ? '#e2e8f0' : undefined,
+      borderRadius: type === 'shape' ? 4 : undefined,
+      padding: type === 'text' ? '1rem' : undefined,
+      fontSize: type === 'text' ? '1rem' : undefined,
+      fontFamily: type === 'text' ? 'inherit' : undefined,
+    };
 
-  const handleAreaDelete = (areaId: string) => {
-    // Implementation for deleting areas
-    console.log('Delete area:', areaId);
-  };
+    const newElement: SlideElement = {
+      id: crypto.randomUUID(),
+      type,
+      content: getDefaultContent(type),
+      style: defaultStyle,
+    };
+
+    console.log('Current elements:', node.attrs.elements);
+    console.log('New element:', newElement);
+
+    const currentElements = node.attrs.elements || [];
+    console.log('Before update - currentElements:', currentElements);
+    updateAttributes({ 
+      elements: [...currentElements, newElement],
+      version: (node.attrs.version || 0) + 1,
+    });
+    console.log('After update - newElement:', newElement);
+    console.log('After update - node.attrs:', node.attrs);
+  }, [node.attrs.elements, node.attrs.version, updateAttributes]);
+
+  // Handle fullscreen
+  const handleFullscreen = useCallback(() => {
+    if (containerRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        containerRef.current.requestFullscreen();
+      }
+    }
+  }, []);
+
+  // Handle element updates
+  const handleElementUpdate = useCallback((elements: SlideElement[]) => {
+    console.log('Updating elements:', elements);
+    updateAttributes({ 
+      elements,
+      version: (node.attrs.version || 0) + 1,
+    });
+  }, [node.attrs.version, updateAttributes]);
 
   return (
     <NodeViewWrapper
-      ref={setNodeRef}
-      style={style}
-      className="relative group"
-      {...attributes}
-      {...sortableAttributes}
+      className={cn(
+        "relative my-6 rounded-xl border bg-background",
+        "transition-all duration-300 ease-in-out",
+        "hover:shadow-xl hover:scale-[1.002] hover:border-primary/20",
+        selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
+      )}
+      ref={containerRef}
+      onClick={(e) => {
+        // Prevent click event from opening slide manager
+        e.stopPropagation();
+      }}
     >
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="cursor-grab"
-          {...listeners}
-        >
-          <GripVertical className="h-4 w-4" />
-        </Button>
+      <SlideToolbar
+        editor={node.editor}
+        showGrid={showGrid}
+        showRulers={showRulers}
+        showNotes={showNotes}
+        onToggleGrid={() => setShowGrid(!showGrid)}
+        onToggleRulers={() => setShowRulers(!showRulers)}
+        onToggleNotes={() => setShowNotes(!showNotes)}
+        onLayoutSelect={handleLayoutSelect}
+        onFullscreen={handleFullscreen}
+        onAddElement={handleAddElement}
+        onToggleAnimation={() => setShowAnimations(!showAnimations)}
+      />
+
+      <div className="p-4">
+        <SlideArea
+          slide={{
+            id: node.attrs.id,
+            elements: node.attrs.elements || [],
+            background: node.attrs.background || { type: 'color', value: '#ffffff' },
+            notes: node.attrs.notes || '',
+          }}
+          isEditing={true}
+          showGrid={showGrid}
+          showRulers={showRulers}
+          showAnimations={showAnimations}
+          onUpdate={handleElementUpdate}
+        />
       </div>
 
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setShowGrid(!showGrid)}
-        >
-          <Grid className={cn("h-4 w-4", showGrid && "text-primary")} />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setShowNotes(!showNotes)}
-        >
-          {showNotes ? (
-            <EyeOff className="h-4 w-4" />
-          ) : (
-            <Eye className="h-4 w-4" />
-          )}
-        </Button>
-      </div>
-
-      <div 
-        ref={containerRef}
-        className={cn(
-          "relative rounded-lg border bg-background shadow-sm",
-          "transition-shadow duration-200",
-          "hover:shadow-md",
-          isDragging && "shadow-lg"
-        )}
-      >
-        <div
-          className={cn(
-            "relative w-full h-full",
-            showGrid && "bg-grid-pattern"
-          )}
-          style={getGridStyles()}
-        >
-          {structure.areas.map((area) => (
-            <SlideArea
-              key={area.id}
-              id={area.id}
-              type={area.type}
-              gridArea={area.gridArea}
-              className={cn(
-                area.className,
-                // Add specific styling based on area type
-                area.type === 'text' && 'text-area',
-                area.type === 'content' && 'content-area',
-                area.type === 'image' && 'image-area',
-                // Add layout-specific styling
-                `${layout.id}-${area.id}-area`
-              )}
-              style={getAreaStyles(area.id)}
-              placeholder={area.placeholder}
-              onDragStart={() => handleDragStart()}
-              onDragEnd={() => handleDragEnd()}
-              onDelete={() => handleAreaDelete(area.id)}
-              onDuplicate={() => handleAreaDuplicate(area.id)}
-            />
-          ))}
+      {showNotes && (
+        <div className="p-4 border-t bg-muted/50">
+          <textarea
+            placeholder="Add speaker notes..."
+            value={node.attrs.notes || ''}
+            onChange={(e) => updateAttributes({ notes: e.target.value })}
+            className="w-full min-h-[100px] bg-transparent border-none resize-none focus:ring-0"
+          />
         </div>
-
-        {showNotes && (
-          <div className="p-4 border-t bg-muted/5">
-            <Textarea
-              ref={notesRef}
-              placeholder="Speaker notes..."
-              value={node.attrs.notes || ''}
-              onChange={e => updateNotes(e.target.value)}
-              className="min-h-[100px] resize-none bg-background"
-            />
-          </div>
-        )}
-      </div>
+      )}
     </NodeViewWrapper>
   );
-}
+});
+
+// Export the dynamic component with SSR disabled
+export const SlideComponent = dynamic(() => Promise.resolve(SlideComponentBase), {
+  ssr: false,
+});
